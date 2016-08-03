@@ -1,0 +1,260 @@
+#!/bin/bash
+
+if [ `id -u` = 0 ];then
+	echo "Não pode ser root!"
+	exit
+fi
+
+INSTDIR=`dirname $0`
+
+cd $INSTDIR 
+PWDIR=`pwd`
+
+WINDIR="$PWDIR/bin"
+WINLIB="$PWDIR/lib"
+GCPATH="$PWDIR/gchmod01"
+GCDIR="$GCPATH/drive_c/Program Files/Grand Chase History"
+GCEXEC="$GCDIR/GrandChase.exe"
+GCMEXEC="$GCDIR/main.exe"
+
+
+export PATH="$WINDIR:$PATH"
+export LD_LIBRARY_PATH="$WINLIB:$LD_LIBRARY_PATH"
+export WINEARCH="win32"
+
+
+if [ -z "$1" ];then
+	export WINEDEBUG="fixme-all,err-all,warn+cursor,-all"
+	cd "$GCDIR"
+	WINEPREFIX="$GCPATH" wine "$GCEXEC"
+   else
+ case "$1" in
+	-h|--help)
+	echo "Descrição!"
+  ;;
+	-d|--debug)
+	export WINEDEBUG="-all"
+	cd "$GCDIR"
+	WINEPREFIX="$GCPATH" wine "$GCEXEC"
+  ;;
+	-m|--main)
+	export WINEDEBUG="fixme-all,err-all,warn+cursor,-all"
+	cd "$GCDIR"
+	WINEPREFIX="$GCPATH" wine "$GCMEXEC"
+  ;;
+	-md|--main-debug)
+	export WINEDEBUG="-all"
+	cd "$GCDIR"
+	WINEPREFIX="$GCPATH" wine "$GCMEXEC"
+  ;;
+	-i|--install)
+   if [ -z "$2" ];then
+	echo "Deve escolher o instalador do Grand Chase History para ser instalado!"
+	exit 0
+   fi
+	if [ -d "$GCDIR" ];then
+	echo "O Grand Chase History já está instalado!"
+	exit 0
+		else
+	echo "A instalar o Grand Chase History..."
+	read -t 2
+	echo "Durante a instalação, DESMARQUE a opção \"Criar um ícone na área de trabalho\"..."
+	read -t 5
+	echo "Iniciando o instalador..."
+	read -t 3
+	export WINEDEBUG="fixme-all,err-all,warn-cursor,-all"
+	mkdir -p $GCPATH
+	WINEPREFIX="$GCPATH" wine "$2"
+    if [ -d "$GCDIR" ];then
+	bash "$0" --fix-shortcuts 
+    fi
+	fi
+  ;;
+	-ri|--reinstall)
+   if [ -z "$2" ];then
+	echo "Deve escolher o instalador do Grand Chase History para ser reinstalado!"
+	exit 0
+   fi
+	if [ -d "$GCDIR" ];then
+	echo "A preparar Backup do Grand Chase History..."
+	read -t 3
+	mkdir -p "$GCPATH/gch_bkp"
+	GCHBKP="$GCPATH/gch_bkp"
+	echo "Copiando o Grand Chase History para o cache de Backup..."
+	cp -R -f "$GCDIR" "$GCHBKP"
+	GCHBKPB="$GCHBKP/Grand Chase History"
+  if [ -d "$GCHBKPB" ];then
+	GCHD=`du -s "$GCDIR" | cut -d "/" -f "1"`
+	GCHB=`du -s "$GCHBKPB" | cut -d "/" -f "1"`
+   if [ "$GCHD" -eq "$GCHB" ];then
+	echo "O Backup foi criado com sucesso!"
+	read -t 3
+                else
+	echo "O Backup não foi criado com sucesso!"
+	exit 0
+   fi
+    else
+	echo "O Backup não foi criado com sucesso!"
+	exit 0
+  fi
+	echo "A reinstalar o Grand Chase History..."
+	read -t 2
+	echo "Durante a reinstalação, DESMARQUE a opção \"Criar um ícone na área de trabalho\"..."
+	read -t 5
+	echo "Iniciando o instalador..."
+	read -t 3
+	export WINEDEBUG="fixme-all,err-all,warn-cursor,-all"
+	mkdir -p $GCPATH
+	WINEPREFIX="$GCPATH" wine "$2"
+    if [ -d "$GCDIR" ];then
+	bash "$0" --fix-shortcuts 
+    fi
+		else
+	echo "Use a opção {-i|--install} para instalar o Grand Chase History!"
+	exit 0
+	fi
+  ;;
+	-rb|--remove-backup)
+	GCHBKP="$GCPATH/gch_bkp"
+	GCHBKPB="$GCHBKP/Grand Chase History"
+if [ -d "$GCHBKPB" ];then
+	echo "A excluir o Backup do Grand Chase History..."
+	rm -R -f "$GCHBKPB"
+  if [ -d "$GCHBKPB" ];then
+	echo "O Backup não foi removido!"
+	exit 0
+		else
+	echo "O Backup foi removido com sucesso!"
+	exit 0
+  fi
+    else
+	echo "A pasta de Backup do Grand Chase History não existe!"
+	exit 0
+fi
+  ;;
+	-f|--fix|--fix-shortcuts)
+SCAPP="$HOME/.local/share/applications"
+
+if [ -e "$SCAPP/GrandChaseHistory.desktop" ];then
+	echo "O atalho para o Grand Chase History já existe..."
+	read -p "Deseja sobrescrever e atualizar o atalho para \"Grand Chase History\"? (s/N)" SHORTGC
+  if [ -z $SHORTGC ];then
+	SHORTGC="N"
+  fi
+  case $SHORTGC in
+		n|N|no|No|NO|nO|não|Não|nÂo|nãO)
+	echo "O atalho \"Grand Chase History\" será mantido!"
+	sleep 3
+		;;
+		s|S|y|Y|yes|Yes|yEs|yeS|sim|Sim|sIm|siM)
+	rm -rf "$SCAPP/GrandChaseHistory.desktop"
+	touch "$SCAPP/GrandChaseHistory.desktop"
+	echo -e "[Desktop Entry]" >> "$SCAPP/GrandChaseHistory.desktop"
+	echo -e "Encoding=UTF-8" >> "$SCAPP/GrandChaseHistory.desktop"
+	echo -e "Name="Grand Chase History"" >> "$SCAPP/GrandChaseHistory.desktop"
+	echo -e "Comment="Grand Chase History on Linux"" >> "$SCAPP/GrandChaseHistory.desktop"
+	echo -e "Type=Application" >> "$SCAPP/GrandChaseHistory.desktop"
+	echo "Exec=$PWDIR/$0" >> "$SCAPP/GrandChaseHistory.desktop"
+	echo "Icon="$GCPATH/ico/GrandChase"" >> "$SCAPP/GrandChaseHistory.desktop"
+	echo -e "Name[fr_FR]=GrandChase" >> "$SCAPP/GrandChaseHistory.desktop"
+	echo -e "Terminal=OFF" >> "$SCAPP/GrandChaseHistory.desktop"
+	echo -e "Categories=Game;" >> "$SCAPP/GrandChaseHistory.desktop"
+	chmod +x "$SCAPP/GrandChaseHistory.desktop"
+	echo "O atalho \"Grand Chase History\" foi atualizado..."
+	echo "para acessar, acesse o menú do sistema, na categoria \"Game\"!"
+	read -t 3
+		;;
+		*)
+	echo "Opção inválida, digite $0 {-h|--help} para mais informações!"
+	exit 0
+		;;
+  esac
+   else
+	touch "$SCAPP/GrandChaseHistory.desktop"
+	echo -e "[Desktop Entry]" >> "$SCAPP/GrandChaseHistory.desktop"
+	echo -e "Encoding=UTF-8" >> "$SCAPP/GrandChaseHistory.desktop"
+	echo -e "Name="Grand Chase History"" >> "$SCAPP/GrandChaseHistory.desktop"
+	echo -e "Comment="Grand Chase History on Linux"" >> "$SCAPP/GrandChaseHistory.desktop"
+	echo -e "Type=Application" >> "$SCAPP/GrandChaseHistory.desktop"
+	echo "Exec=$PWDIR/$0" >> "$SCAPP/GrandChaseHistory.desktop"
+	echo "Icon="$GCPATH/ico/GrandChase"" >> "$SCAPP/GrandChaseHistory.desktop"
+	echo -e "Name[fr_FR]=GrandChase" >> "$SCAPP/GrandChaseHistory.desktop"
+	echo -e "Terminal=OFF" >> "$SCAPP/GrandChaseHistory.desktop"
+	echo -e "Categories=Game;" >> "$SCAPP/GrandChaseHistory.desktop"
+	chmod +x "$SCAPP/GrandChaseHistory.desktop"
+
+ if [ -e "$SCAPP/GrandChaseHistory.desktop" ];then
+	echo "Atalho para o Grand Chase History criado com sucesso"
+	echo "Acesse o Menú do sistema, na categoria \"Game\" para abrir o jogo!"
+   else
+	echo "Falha ao criar o atalho Grand Chase History!"
+	exit 0
+ fi
+
+fi
+
+if [ -e "$SCAPP/GrandChaseHistoryMain.desktop" ];then
+	echo "O atalho para o Grand Chase History Main já existe..."
+	read -p "Deseja sobrescrever e atualizar o atalho para \"Grand Chase History Main\"? (s/N)" SHORTGM
+  if [ -z $SHORTGM ];then
+	SHORTGM="N"
+  fi
+  case $SHORTGM in
+		n|N|no|No|NO|nO|não|Não|nÂo|nãO)
+	echo "O atalho \"Grand Chase History Main\" será mantido!"
+	sleep 3
+		;;
+		s|S|y|Y|yes|Yes|yEs|yeS|sim|Sim|sIm|siM)
+	rm -rf "$SCAPP/GrandChaseHistoryMain.desktop"
+	touch "$SCAPP/GrandChaseHistoryMain.desktop"
+	echo -e "[Desktop Entry]" >> "$SCAPP/GrandChaseHistoryMain.desktop"
+	echo -e "Encoding=UTF-8" >> "$SCAPP/GrandChaseHistoryMain.desktop"
+	echo -e "Name="Grand Chase History Main"" >> "$SCAPP/GrandChaseHistoryMain.desktop"
+	echo -e "Comment="Grand Chase History on Linux"" >> "$SCAPP/GrandChaseHistoryMain.desktop"
+	echo -e "Type=Application" >> "$SCAPP/GrandChaseHistoryMain.desktop"
+	echo "Exec=\"$PWDIR/$0 --main\"" >> "$SCAPP/GrandChaseHistoryMain.desktop"
+	echo "Icon="$GCPATH/ico/GrandChaseMain"" >> "$SCAPP/GrandChaseHistoryMain.desktop"
+	echo -e "Name[fr_FR]=GrandChase Main" >> "$SCAPP/GrandChaseHistoryMain.desktop"
+	echo -e "Terminal=OFF" >> "$SCAPP/GrandChaseHistoryMain.desktop"
+	echo -e "Categories=Game;" >> "$SCAPP/GrandChaseHistoryMain.desktop"
+	chmod +x "$SCAPP/GrandChaseHistoryMain.desktop"
+	echo "O atalho \"Grand Chase History Main\" foi atualizado..."
+	echo "Para acessar, acesse o menú do sistema, na categoria \"Game\"!"
+	read -t 3
+		;;
+		*)
+	echo "Opção inválida, digite $0 {-h|--help} para mais informações!"
+	exit 0
+		;;
+  esac
+   else
+	touch "$SCAPP/GrandChaseHistoryMain.desktop"
+	echo -e "[Desktop Entry]" >> "$SCAPP/GrandChaseHistoryMain.desktop"
+	echo -e "Encoding=UTF-8" >> "$SCAPP/GrandChaseHistoryMain.desktop"
+	echo -e "Name="Grand Chase History Main"" >> "$SCAPP/GrandChaseHistoryMain.desktop"
+	echo -e "Comment="Grand Chase History on Linux"" >> "$SCAPP/GrandChaseHistoryMain.desktop"
+	echo -e "Type=Application" >> "$SCAPP/GrandChaseHistoryMain.desktop"
+	echo "Exec=\"$PWDIR/$0 --main\"" >> "$SCAPP/GrandChaseHistoryMain.desktop"
+	echo "Icon="$GCPATH/ico/GrandChaseMain"" >> "$SCAPP/GrandChaseHistoryMain.desktop"
+	echo -e "Name[fr_FR]=GrandChase Main" >> "$SCAPP/GrandChaseHistoryMain.desktop"
+	echo -e "Terminal=OFF" >> "$SCAPP/GrandChaseHistoryMain.desktop"
+	echo -e "Categories=Game;" >> "$SCAPP/GrandChaseHistoryMain.desktop"
+	chmod +x "$SCAPP/GrandChaseHistoryMain.desktop"
+
+ if [ -e "$SCAPP/GrandChaseHistoryMain.desktop" ];then
+	echo "Atalho para o Grand Chase History Main criado com sucesso"
+	echo "Acesse o Menú do sistema, na categoria \"Game\" para abrir o jogo!"
+
+   else
+	echo "Falha ao criar o atalho..."
+	exit 0
+ fi
+
+fi
+	exit 0
+  ;;
+	*)
+	echo -e "\nErro ao completar o comando...\nDigite "$0" {-h|--help} para mais informações!"
+	exit 0
+ esac
+fi
