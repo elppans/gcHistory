@@ -22,6 +22,11 @@ export PATH="$WINDIR:$PATH"
 export LD_LIBRARY_PATH="$WINLIB:$LD_LIBRARY_PATH"
 export WINEARCH="win32"
 
+if ( whereis rsync | grep bin ) >> /dev/null ; then
+	CPYNC="rsync -dhar --info=progress2"
+  else
+	CPYNC="cp -u -a -f"
+fi
 
 if [ -z "$1" ];then
 	export WINEDEBUG="fixme-all,err-all,warn+cursor,-all"
@@ -29,9 +34,6 @@ if [ -z "$1" ];then
 	WINEPREFIX="$GCPATH" wine "$GCEXEC"
    else
  case "$1" in
-	-h|--help)
-	echo "Descrição!"
-  ;;
 	-d|--debug)
 	export WINEDEBUG="-all"
 	cd "$GCDIR"
@@ -81,7 +83,7 @@ if [ -z "$1" ];then
 	mkdir -p "$GCPATH/gch_bkp"
 	GCHBKP="$GCPATH/gch_bkp"
 	echo "Copiando o Grand Chase History para o cache de Backup..."
-	cp -R -f "$GCDIR" "$GCHBKP"
+	$CPYNC "$GCDIR" "$GCHBKP"
 	GCHBKPB="$GCHBKP/Grand Chase History"
   if [ -d "$GCHBKPB" ];then
 	GCHD=`du -s "$GCDIR" | cut -d "/" -f "1"`
@@ -115,8 +117,8 @@ if [ -z "$1" ];then
 	fi
   ;;
 	-rb|--remove-backup)
-	GCHBKP="$GCPATH/gch_bkp"
-	GCHBKPB="$GCHBKP/Grand Chase History"
+    GCHBKP="$GCPATH/gch_bkp"
+    GCHBKPB="$GCHBKP/Grand Chase History"
 if [ -d "$GCHBKPB" ];then
 	echo "A excluir o Backup do Grand Chase History..."
 	rm -R -f "$GCHBKPB"
@@ -132,8 +134,38 @@ if [ -d "$GCHBKPB" ];then
 	exit 0
 fi
   ;;
+	-re|--restore-backup)
+    GCHBKP="$GCPATH/gch_bkp"
+    GCHBKPB="$GCHBKP/Grand Chase History"
+if [ -d "$GCHBKPB" ];then
+	echo "Removendo a instalação atual do Grand Chase History..."
+	read -t 3
+	rm -R -f $GCDIR
+	echo "Restaurando o Backup..."
+	$CPYNC "$GCHBKP" "$GCDIR"
+  if [ -d "$GCDIR" ];then
+	GCHD=`du -s "$GCDIR" | cut -d "/" -f "1"`
+	GCHB=`du -s "$GCHBKPB" | cut -d "/" -f "1"`
+   if [ "$GCHD" -eq "$GCHB" ];then
+	echo "A restauração foi feita com sucesso..."
+	read -t 3
+	echo "Removendo a pasta de Backup..."
+	rm -R -f $GCHBKPB
+                else
+	echo "A restauração foi quebrada!"
+	exit 0
+   fi
+    else
+	echo "A restauração foi quebrada!"
+	exit 0
+  fi
+	else
+	echo "Não existe backup a ser restaurado!"
+	exit
+fi
+  ;;
 	-f|--fix|--fix-shortcuts)
-SCAPP="$HOME/.local/share/applications"
+    SCAPP="$HOME/.local/share/applications"
 
 if [ -e "$SCAPP/GrandChaseHistory.desktop" ];then
 	echo "O atalho para o Grand Chase History já existe..."
@@ -253,8 +285,83 @@ if [ -e "$SCAPP/GrandChaseHistoryMain.desktop" ];then
 fi
 	exit 0
   ;;
+	-rs|--remove-shortcuts)
+    SCAPP="$HOME/.local/share/applications"
+if [ -e "$SCAPP/GrandChaseHistory.desktop" ];then
+	rm -rf "$SCAPP/GrandChaseHistory.desktop"
+  if [ -e "$SCAPP/GrandChaseHistory.desktop" ];then
+	echo "O atalho do Grand Chase History não foi removido!"
+	exit 0
+     else
+	echo "O atalho do Grand Chase History foi removido com sucesso!"
+  fi
+   else
+	echo "O atalho para o Grand Chase History não existe ou já foi removido!"
+	exit 0
+fi
+
+if [ -e "$SCAPP/GrandChaseHistoryMain.desktop" ];then
+	rm -rf "$SCAPP/GrandChaseHistoryMain.desktop"
+  if [ -e "$SCAPP/GrandChaseHistoryMain.desktop" ];then
+	echo "O atalho do Grand Chase History Main não foi removido!"
+	exit 0
+     else
+	echo "O atalho do Grand Chase History Main foi removido com sucesso!"
+  fi
+   else
+	echo "O atalho para o Grand Chase History Main não existe ou já foi removido!"
+	exit 0
+fi
+	exit 0
+  ;;
+	-rg|--remove-game)
+if [ -d $GCDIR ];then
+	rm -rf $GCDIR
+ if [ -d $GCDIR ];then
+	echo "O jogo Grand Chase History não foi removido com exito!"
+	exit 0
+    else
+	echo "O jogo Grand Chase History foi removido com sucesso!"
+	bash "$0" --remove-shortcuts
+ fi
+   else
+	echo "O jogo Grand Chase History não existe ou já foi removido!"
+	exit 0
+fi
+  ;;
+	-V|--version)
+	wine --version
+	exit 0
+  ;;
+	-h|--help)
+	echo -e '
+gcHistory, um aplicativo CLI para ajudar a jogar Grand Chase History em sistemas "não nativos" de sua origem.
+Uso: gcHistory [OPÇÃO]... [EXE]...
+
+Argumentos obrigatórios para opções longas também o são para as opções curtas.
+
+	Se omitido, iniciará o jogo via Launcher!
+
+
+  -h,   --help                         Emite esta ajuda
+  -d,   --debug                        Executa o jogo em DEBUG MODE
+  -m,   --main                         Executa o jogo usando o Main em vez do Launcher
+  -md,  --main-debug                   Executa o jogo usando o Main em DEBUG MODE
+  -i,   --install {Instalador.exe}     Instala o jogo em seu Usuário Atual
+  -ri,  --reinstall  {Instalador.exe}  Faz um Backup do jogo instalado e reinstala por cima
+  -rb,  --remove-backup                Remove o Backup criado ao reinstalar o jogo
+  -re,  --restore-backup               Remove o jogo reinstalado e restaura o Backup no lugar
+  -f,   --fix, --fix-shortcuts         Instala/atualiza um atalho do Launcher e Main no menú do sistema
+  -rs,  --remove-shortcuts             Remove o atalho do Launcher e do Main do menú do sistema
+  -rg,  --remove-game                  Remove o jogo por completo de seu Usuário Atual
+  -V,  --version                       Mostra a versão do Wine usado e sai
+'
+	exit 0
+  ;;
+
 	*)
 	echo -e "\nErro ao completar o comando...\nDigite "$0" {-h|--help} para mais informações!"
 	exit 0
+	;;
  esac
 fi
