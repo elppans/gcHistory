@@ -12,7 +12,7 @@ PWDIR=`pwd`
 
 WINDIR="$PWDIR/bin"
 WINLIB="$PWDIR/lib"
-GCPATH="$PWDIR/gchmod01"
+GCPATH="$PWDIR/gchmod"
 GCDIR="$GCPATH/drive_c/Program Files/Grand Chase History"
 GCEXEC="$GCDIR/GrandChase.exe"
 GCMEXEC="$GCDIR/main.exe"
