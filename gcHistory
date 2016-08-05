@@ -44,10 +44,7 @@ if [ -d "$GCPATH" ];then
 	WINEPREFIX="$GCPATH" winetricks -q dotnet40
   if [ -d "$GCPATH" ];then
 	echo "Máquina virtual criada com sucesso..."
-	read -t 3
-	echo "Use a opção para instalar o Grand Chase History..."
-	read -t 3
-	echo "Digite {-h|--help} para mais informações!"
+	read -t 5
      else
 	echo "Falha ao criar a máquina virtual para o jogo!"
 	exit 0
