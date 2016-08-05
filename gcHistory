@@ -34,6 +34,27 @@ if [ -z "$1" ];then
 	WINEPREFIX="$GCPATH" wine "$GCEXEC"
    else
  case "$1" in
+	-cvm|--create-virtual-machine)
+	export WINEDEBUG="fixme-all,err-all,warn+cursor,-all"
+if [ -d "$GCPATH" ];then
+	echo "O path Wine já existe!"
+	exit 0
+   else
+	WINEPREFIX="$GCPATH" winepath
+	WINEPREFIX="$GCPATH" winetricks -q dotnet40
+  if [ -d "$GCPATH" ];then
+	echo "Máquina virtual criada com sucesso..."
+	read -t 3
+	echo "Use a opção para instalar o Grand Chase History..."
+	read -t 3
+	echo "Digite {-h|--help} para mais informações!"
+     else
+	echo "Falha ao criar a máquina virtual para o jogo!"
+	exit 0
+  fi
+fi
+	exit 0
+  ;;
 	-d|--debug)
 	export WINEDEBUG="-all"
 	cd "$GCDIR"
@@ -354,6 +375,7 @@ Argumentos obrigatórios para opções longas também o são para as opções cu
   -f,   --fix, --fix-shortcuts         Instala/atualiza um atalho do Launcher e Main no menú do sistema
   -rs,  --remove-shortcuts             Remove o atalho do Launcher e do Main do menú do sistema
   -rg,  --remove-game                  Remove o jogo por completo de seu Usuário Atual
+  -cvm, --create-virtual-machine       Cria a Máquina Virtual do Wine para que possa instalar e jogar o Grand Chase History
   -V,  --version                       Mostra a versão do Wine usado e sai
 '
 	exit 0
