@@ -16,7 +16,7 @@ GCPATH="$PWDIR/gchmod"
 GCDIR="$GCPATH/drive_c/Program Files/Grand Chase History"
 GCEXEC="$GCDIR/GrandChase.exe"
 GCMEXEC="$GCDIR/main.exe"
-
+WININST=`readlink -m "$0"`
 
 export PATH="$WINDIR:$PATH"
 export LD_LIBRARY_PATH="$WINLIB:$LD_LIBRARY_PATH"
@@ -41,7 +41,8 @@ if [ -d "$GCPATH" ];then
 	exit 0
    else
 	WINEPREFIX="$GCPATH" winepath
-	WINEPREFIX="$GCPATH" winetricks -q dotnet40
+	WINEPREFIX="$GCPATH" winetricks -q dotnet40 mfc42 vcrun6
+	WINEPREFIX="$GCPATH" winetricks win7
   if [ -d "$GCPATH" ];then
 	echo "Máquina virtual criada com sucesso..."
 	read -t 5
@@ -186,11 +187,29 @@ fi
     SCAPP="$HOME/.local/share/applications"
 
 if [ -e "$SCAPP/GrandChaseHistory.desktop" ];then
+##SHORT=Y
+if [ -z "$2" ];then
+###SHORTGC
 	echo "O atalho para o Grand Chase History já existe..."
 	read -p "Deseja sobrescrever e atualizar o atalho para \"Grand Chase History\"? (s/N)" SHORTGC
   if [ -z $SHORTGC ];then
 	SHORTGC="N"
   fi
+###SHORTGC
+else
+ if [ "$2" = "-y" ];then
+
+	SHORTGC="Y"
+     else
+  if [ "$2" = "-Y" ];then
+	SHORTGC="Y"
+    else
+	echo "Opção inválida!"
+	exit 0
+  fi
+ fi
+fi
+##SHORT=Y
   case $SHORTGC in
 		n|N|no|No|NO|nO|não|Não|nÂo|nãO)
 	echo "O atalho \"Grand Chase History\" será mantido!"
@@ -204,7 +223,7 @@ if [ -e "$SCAPP/GrandChaseHistory.desktop" ];then
 	echo -e "Name="Grand Chase History"" >> "$SCAPP/GrandChaseHistory.desktop"
 	echo -e "Comment="Grand Chase History on Linux"" >> "$SCAPP/GrandChaseHistory.desktop"
 	echo -e "Type=Application" >> "$SCAPP/GrandChaseHistory.desktop"
-	echo "Exec=$PWDIR/$0" >> "$SCAPP/GrandChaseHistory.desktop"
+	echo "Exec=$WININST" >> "$SCAPP/GrandChaseHistory.desktop"
 	echo "Icon="$PWDIR/ico/GrandChase"" >> "$SCAPP/GrandChaseHistory.desktop"
 	echo -e "Name[fr_FR]=GrandChase" >> "$SCAPP/GrandChaseHistory.desktop"
 	echo -e "Terminal=OFF" >> "$SCAPP/GrandChaseHistory.desktop"
@@ -226,7 +245,7 @@ if [ -e "$SCAPP/GrandChaseHistory.desktop" ];then
 	echo -e "Name="Grand Chase History"" >> "$SCAPP/GrandChaseHistory.desktop"
 	echo -e "Comment="Grand Chase History on Linux"" >> "$SCAPP/GrandChaseHistory.desktop"
 	echo -e "Type=Application" >> "$SCAPP/GrandChaseHistory.desktop"
-	echo "Exec=$PWDIR/$0" >> "$SCAPP/GrandChaseHistory.desktop"
+	echo "Exec=$WININST" >> "$SCAPP/GrandChaseHistory.desktop"
 	echo "Icon="$PWDIR/ico/GrandChase"" >> "$SCAPP/GrandChaseHistory.desktop"
 	echo -e "Name[fr_FR]=GrandChase" >> "$SCAPP/GrandChaseHistory.desktop"
 	echo -e "Terminal=OFF" >> "$SCAPP/GrandChaseHistory.desktop"
@@ -244,11 +263,29 @@ if [ -e "$SCAPP/GrandChaseHistory.desktop" ];then
 fi
 
 if [ -e "$SCAPP/GrandChaseHistoryMain.desktop" ];then
+##SHORT=Y
+if [ -z "$2" ];then
+###SHORTGM
 	echo "O atalho para o Grand Chase History Main já existe..."
 	read -p "Deseja sobrescrever e atualizar o atalho para \"Grand Chase History Main\"? (s/N)" SHORTGM
   if [ -z $SHORTGM ];then
 	SHORTGM="N"
   fi
+###SHORTGM
+else
+ if [ "$2" = "-y" ];then
+
+	SHORTGM="Y"
+     else
+  if [ "$2" = "-Y" ];then
+	SHORTGM="Y"
+    else
+	echo "Opção inválida!"
+	exit 0
+  fi
+ fi
+fi
+##SHORT=Y
   case $SHORTGM in
 		n|N|no|No|NO|nO|não|Não|nÂo|nãO)
 	echo "O atalho \"Grand Chase History Main\" será mantido!"
@@ -262,7 +299,7 @@ if [ -e "$SCAPP/GrandChaseHistoryMain.desktop" ];then
 	echo -e "Name="Grand Chase History Main"" >> "$SCAPP/GrandChaseHistoryMain.desktop"
 	echo -e "Comment="Grand Chase History on Linux"" >> "$SCAPP/GrandChaseHistoryMain.desktop"
 	echo -e "Type=Application" >> "$SCAPP/GrandChaseHistoryMain.desktop"
-	echo "Exec=\"$PWDIR/$0 --main\"" >> "$SCAPP/GrandChaseHistoryMain.desktop"
+	echo "Exec=\"$WININST --main\"" >> "$SCAPP/GrandChaseHistoryMain.desktop"
 	echo "Icon="$PWDIR/ico/GrandChaseMain"" >> "$SCAPP/GrandChaseHistoryMain.desktop"
 	echo -e "Name[fr_FR]=GrandChase Main" >> "$SCAPP/GrandChaseHistoryMain.desktop"
 	echo -e "Terminal=OFF" >> "$SCAPP/GrandChaseHistoryMain.desktop"
@@ -284,7 +321,7 @@ if [ -e "$SCAPP/GrandChaseHistoryMain.desktop" ];then
 	echo -e "Name="Grand Chase History Main"" >> "$SCAPP/GrandChaseHistoryMain.desktop"
 	echo -e "Comment="Grand Chase History on Linux"" >> "$SCAPP/GrandChaseHistoryMain.desktop"
 	echo -e "Type=Application" >> "$SCAPP/GrandChaseHistoryMain.desktop"
-	echo "Exec=\"$PWDIR/$0 --main\"" >> "$SCAPP/GrandChaseHistoryMain.desktop"
+	echo "Exec=\"$WININST --main\"" >> "$SCAPP/GrandChaseHistoryMain.desktop"
 	echo "Icon="$PWDIR/ico/GrandChaseMain"" >> "$SCAPP/GrandChaseHistoryMain.desktop"
 	echo -e "Name[fr_FR]=GrandChase Main" >> "$SCAPP/GrandChaseHistoryMain.desktop"
 	echo -e "Terminal=OFF" >> "$SCAPP/GrandChaseHistoryMain.desktop"
@@ -347,6 +384,9 @@ if [ -d $GCDIR ];then
 	exit 0
 fi
   ;;
+#  	-wt|--winetricks)
+#	WINEPREFIX="$GCPATH" winetricks
+  #;;
 	-V|--version)
 	wine --version
 	exit 0
