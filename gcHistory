@@ -187,11 +187,29 @@ fi
     SCAPP="$HOME/.local/share/applications"
 
 if [ -e "$SCAPP/GrandChaseHistory.desktop" ];then
+##SHORT=Y
+if [ -z "$2" ];then
+###SHORTGC
 	echo "O atalho para o Grand Chase History já existe..."
 	read -p "Deseja sobrescrever e atualizar o atalho para \"Grand Chase History\"? (s/N)" SHORTGC
   if [ -z $SHORTGC ];then
 	SHORTGC="N"
   fi
+###SHORTGC
+else
+ if [ "$2" = "-y" ];then
+
+	SHORTGC="Y"
+     else
+  if [ "$2" = "-Y" ];then
+	SHORTGC="Y"
+    else
+	echo "Opção inválida!"
+	exit 0
+  fi
+ fi
+fi
+##SHORT=Y
   case $SHORTGC in
 		n|N|no|No|NO|nO|não|Não|nÂo|nãO)
 	echo "O atalho \"Grand Chase History\" será mantido!"
@@ -245,11 +263,29 @@ if [ -e "$SCAPP/GrandChaseHistory.desktop" ];then
 fi
 
 if [ -e "$SCAPP/GrandChaseHistoryMain.desktop" ];then
+##SHORT=Y
+if [ -z "$2" ];then
+###SHORTGM
 	echo "O atalho para o Grand Chase History Main já existe..."
 	read -p "Deseja sobrescrever e atualizar o atalho para \"Grand Chase History Main\"? (s/N)" SHORTGM
   if [ -z $SHORTGM ];then
 	SHORTGM="N"
   fi
+###SHORTGM
+else
+ if [ "$2" = "-y" ];then
+
+	SHORTGM="Y"
+     else
+  if [ "$2" = "-Y" ];then
+	SHORTGM="Y"
+    else
+	echo "Opção inválida!"
+	exit 0
+  fi
+ fi
+fi
+##SHORT=Y
   case $SHORTGM in
 		n|N|no|No|NO|nO|não|Não|nÂo|nãO)
 	echo "O atalho \"Grand Chase History Main\" será mantido!"
