@@ -41,7 +41,8 @@ if [ -d "$GCPATH" ];then
 	exit 0
    else
 	WINEPREFIX="$GCPATH" winepath
-	WINEPREFIX="$GCPATH" winetricks -q dotnet40
+	WINEPREFIX="$GCPATH" winetricks -q dotnet40 mfc42 vcrun6
+	WINEPREFIX="$GCPATH" winetricks win7
   if [ -d "$GCPATH" ];then
 	echo "Máquina virtual criada com sucesso..."
 	read -t 5
