@@ -347,6 +347,9 @@ if [ -d $GCDIR ];then
 	exit 0
 fi
   ;;
+#  	-wt|--winetricks)
+#	WINEPREFIX="$GCPATH" winetricks
+  #;;
 	-V|--version)
 	wine --version
 	exit 0
