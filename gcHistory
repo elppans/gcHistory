@@ -41,8 +41,9 @@ if [ -d "$GCPATH" ];then
 	exit 0
    else
 	WINEPREFIX="$GCPATH" winepath
-	WINEPREFIX="$GCPATH" winetricks -q dotnet40 mfc42 vcrun6
-	WINEPREFIX="$GCPATH" winetricks win7
+#	WINEPREFIX="$GCPATH" winetricks -q dotnet40 mfc42 vcrun6
+	WINEPREFIX="$GCPATH" winetricks -q mfc42 dotnet45 vcrun2015 --optout
+	WINEPREFIX="$GCPATH" winetricks win7 --optout
   if [ -d "$GCPATH" ];then
 	echo "Máquina virtual criada com sucesso..."
 	read -t 5
@@ -59,7 +60,7 @@ fi
 	WINEPREFIX="$GCPATH" wine "$GCEXEC"
   ;;
 	-m|--main)
-	export WINEDEBUG="fixme-all,err-all,warn+cursor,-all"
+	export WINEDEBUG="fixme-all,err-all,warn-cursor,-all"
 	cd "$GCDIR"
 	WINEPREFIX="$GCPATH" wine "$GCMEXEC"
   ;;
@@ -384,9 +385,44 @@ if [ -d $GCDIR ];then
 	exit 0
 fi
   ;;
-#  	-wt|--winetricks)
-#	WINEPREFIX="$GCPATH" winetricks
-  #;;
+  	-wt|--winetricks)
+	WINEPREFIX="$GCPATH" winetricks
+  ;;
+	-xt|--xterm)
+	WINEPREFIX="$GCPATH" xterm
+  ;;
+	-svd|--set-virtual-desktop)
+	clear
+
+	VIRTDESKDIM="$2"
+
+	echo -e "Lendo informações do seu monitor:\n"
+
+	read -t 3
+
+	WINEPREFIX="$GCPATH" xrandr
+
+	read -t 3
+
+	echo -e "\nInforme a resolução desejada para a Área de trabalho Virtual..."
+	echo -e "Se omitido, será configurado para "1280x1024"..."
+	echo -e "Para desativar a àrea de Trabalho Virtual, digite "off" no lugar da resolução.\n"
+	read -p "Resolução do Monitor Virtual [ "off" para desativado ] : " VIRTDESKDIM
+
+if [ -z "$VIRTDESKDIM" ];then
+	WINEPREFIX="$GCPATH" winetricks vd=1280x1024
+	exit 0
+ else
+  if [ "$VIRTDESKDIM" = "off" ];then
+	WINEPREFIX="$GCPATH" winetricks vd=off
+	exit 0
+   else
+	WINEPREFIX="$GCPATH" winetricks vd="$VIRTDESKDIM"
+	exit 0
+  fi
+fi
+
+  ;;
 	-V|--version)
 	wine --version
 	exit 0
@@ -412,7 +448,10 @@ Argumentos obrigatórios para opções longas também o são para as opções cu
   -f,   --fix, --fix-shortcuts         Instala/atualiza um atalho do Launcher e Main no menú do sistema
   -rs,  --remove-shortcuts             Remove o atalho do Launcher e do Main do menú do sistema
   -rg,  --remove-game                  Remove o jogo por completo de seu Usuário Atual
+  -wt,  --winetricks                   Abre o configurador Winetricks em modo GUI
+  -xt,  --xterm                        Abre o Terminal XTERM usando a máquina virtual do Grand Chase History.
   -cvm, --create-virtual-machine       Cria a Máquina Virtual do Wine para que possa instalar e jogar o Grand Chase History
+  -svd, --set-virtual-desktop          Ativa o Desktop Virtual do Wine e configura sua resolução [ off para desativar ]
   -V,  --version                       Mostra a versão do Wine usado e sai
 '
 	exit 0
