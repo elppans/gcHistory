@@ -41,10 +41,11 @@ if [ -d "$GCPATH" ];then
 	exit 0
    else
 	WINEPREFIX="$GCPATH" winepath
-	WINEPREFIX="$GCPATH" wine regsvr32 mailmime.dll
-#	WINEPREFIX="$GCPATH" winetricks -q dotnet40 mfc42 vcrun6
-	WINEPREFIX="$GCPATH" winetricks -q mfc42 dotnet40 vcrun2015 --optout
+	WINEPREFIX="$GCPATH" wine regsvr32 $GCDIR/mailmime.dll
+	WINEPREFIX="$GCPATH" winetricks -q dotnet40 mfc42 vcrun6
+	#WINEPREFIX="$GCPATH" winetricks -q mfc42 dotnet40 vcrun2015 --optout
 	#WINEPREFIX="$GCPATH" winetricks -q mfc42 dotnet45 vcrun2015 --optout
+	WINEPREFIX="$GCPATH" winetricks -q vcrun2015
 	WINEPREFIX="$GCPATH" winetricks win7 --optout
   if [ -d "$GCPATH" ];then
 	echo "Máquina virtual criada com sucesso..."
