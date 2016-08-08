@@ -413,7 +413,7 @@ fi
 	read -p "Resolução do Monitor Virtual [ "off" para desativado ] : " VIRTDESKDIM
 
 if [ -z "$VIRTDESKDIM" ];then
-	WINEPREFIX="$GCPATH" winetricks vd=1280x1024
+	WINEPREFIX="$GCPATH" winetricks vd="1280x1024"
 	exit 0
  else
   if [ "$VIRTDESKDIM" = "off" ];then
