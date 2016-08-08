@@ -5,10 +5,13 @@ if [ `id -u` = 0 ];then
 	exit
 fi
 
+RLSET=`readlink -m "$2"`
+
 INSTDIR=`dirname $0`
 
 cd $INSTDIR 
 PWDIR=`pwd`
+
 
 WINDIR="$PWDIR/bin"
 WINLIB="$PWDIR/lib"
@@ -17,6 +20,7 @@ GCDIR="$GCPATH/drive_c/Program Files/Grand Chase History"
 GCEXEC="$GCDIR/GrandChase.exe"
 GCMEXEC="$GCDIR/main.exe"
 WININST=`readlink -m "$0"`
+
 
 export PATH="$WINDIR:$PATH"
 export LD_LIBRARY_PATH="$WINLIB:$LD_LIBRARY_PATH"
@@ -41,11 +45,14 @@ if [ -d "$GCPATH" ];then
 	exit 0
    else
 	WINEPREFIX="$GCPATH" winepath
-	WINEPREFIX="$GCPATH" wine regsvr32 $GCDIR/mailmime.dll
-	WINEPREFIX="$GCPATH" winetricks -q dotnet40 mfc42 vcrun6
+	WINEPREFIX="$GCPATH" winetricks winxp --optout
+	#WINEPREFIX="$GCPATH" wine regsvr32 $GCDIR/mailmime.dll (mfc42 = dll dinâmico)
+	#WINEPREFIX="$GCPATH" winetricks -q dotnet40 mfc42 vcrun6 --optout
+	#WINEPREFIX="$GCPATH" winetricks -q dotnet40 mfc42 vcrun6 wmp9 wmv9vcm --optout
+	WINEPREFIX="$GCPATH" winetricks -q dotnet40 mfc42 vcrun6 wmv9vcm --optout
 	#WINEPREFIX="$GCPATH" winetricks -q mfc42 dotnet40 vcrun2015 --optout
-	#WINEPREFIX="$GCPATH" winetricks -q mfc42 dotnet45 vcrun2015 --optout
-	WINEPREFIX="$GCPATH" winetricks -q vcrun2015
+	#WINEPREFIX="$GCPATH" winetricks -q mfc42 dotnet45 vcrun2015 --optout (dotnet45 deixa pesado e a maioria dos pacotes não faz efeito algum)
+	#WINEPREFIX="$GCPATH" winetricks -q vcrun2015 --optout (não faz efeito algum)
 	WINEPREFIX="$GCPATH" winetricks win7 --optout
   if [ -d "$GCPATH" ];then
 	echo "Máquina virtual criada com sucesso..."
@@ -89,7 +96,7 @@ fi
 	read -t 3
 	export WINEDEBUG="fixme-all,err-all,warn-cursor,-all"
 	mkdir -p $GCPATH
-	WINEPREFIX="$GCPATH" wine "$2"
+	WINEPREFIX="$GCPATH" wine "$RLSET"
     if [ -d "$GCDIR" ];then
 	bash "$0" --fix-shortcuts 
     fi
@@ -374,9 +381,9 @@ fi
 	exit 0
   ;;
 	-rg|--remove-game)
-if [ -d $GCDIR ];then
-	rm -rf $GCDIR
- if [ -d $GCDIR ];then
+if [ -d "$GCDIR" ];then
+	rm -rf "$GCDIR"
+ if [ -d "$GCDIR" ];then
 	echo "O jogo Grand Chase History não foi removido com exito!"
 	exit 0
     else
