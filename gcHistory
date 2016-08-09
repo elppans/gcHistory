@@ -49,8 +49,8 @@ if [ -d "$GCPATH" ];then
 	#WINEPREFIX="$GCPATH" wine regsvr32 $GCDIR/mailmime.dll (mfc42 = dll dinâmico)
 	#WINEPREFIX="$GCPATH" winetricks -q dotnet40 mfc42 vcrun6 --optout
 	#WINEPREFIX="$GCPATH" winetricks -q dotnet40 mfc42 vcrun6 wmp9 wmv9vcm --optout
-	#WINEPREFIX="$GCPATH" winetricks -q dotnet40 mfc42 vcrun6 wmv9vcm allfonts --optout
-	WINEPREFIX="$GCPATH" winetricks -q dotnet40 mfc42 vcrun6 wmv9vcm tahoma --optout
+	WINEPREFIX="$GCPATH" winetricks -q dotnet40 mfc42 vcrun6 wmv9vcm allfonts --optout
+	#WINEPREFIX="$GCPATH" winetricks -q dotnet40 mfc42 vcrun6 wmv9vcm tahoma --optout
 	#WINEPREFIX="$GCPATH" winetricks -q mfc42 dotnet40 vcrun2015 --optout
 	#WINEPREFIX="$GCPATH" winetricks -q mfc42 dotnet45 vcrun2015 --optout (dotnet45 deixa pesado e a maioria dos pacotes não faz efeito algum)
 	#WINEPREFIX="$GCPATH" winetricks -q vcrun2015 --optout (não faz efeito algum)
