@@ -66,7 +66,7 @@ fi
 	exit 0
   ;;
 	-d|--debug)
-	export WINEDEBUG="-all"
+	export WINEDEBUG=""
 	cd "$GCDIR"
 	WINEPREFIX="$GCPATH" wine "$GCEXEC"
   ;;
@@ -76,7 +76,7 @@ fi
 	WINEPREFIX="$GCPATH" wine "$GCMEXEC"
   ;;
 	-md|--main-debug)
-	export WINEDEBUG="-all"
+	export WINEDEBUG=""
 	cd "$GCDIR"
 	WINEPREFIX="$GCPATH" wine "$GCMEXEC"
   ;;
