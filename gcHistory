@@ -75,16 +75,19 @@ fi
 	exit 0
   ;;
 	-d|--debug)
+	export WINEDLLOVERRIDES="wmp=n;quartz=n;wmvcore=n;winegstreamer=;devenum=b"
 	export WINEDEBUG=""
 	cd "$GCDIR"
 	WINEPREFIX="$GCPATH" wine "$GCEXEC"
   ;;
 	-m|--main)
+	export WINEDLLOVERRIDES="wmp=n;quartz=n;wmvcore=n;winegstreamer=;devenum=b"
 	export WINEDEBUG="fixme-all,err-all,warn-cursor,-all"
 	cd "$GCDIR"
 	WINEPREFIX="$GCPATH" wine "$GCMEXEC"
   ;;
 	-md|--main-debug)
+	export WINEDLLOVERRIDES="wmp=n;quartz=n;wmvcore=n;winegstreamer=;devenum=b"
 	export WINEDEBUG=""
 	cd "$GCDIR"
 	WINEPREFIX="$GCPATH" wine "$GCMEXEC"
@@ -105,8 +108,9 @@ fi
 	echo "Iniciando o instalador..."
 	read -t 3
 	export WINEDEBUG="fixme-all,err-all,warn-cursor,-all"
-	mkdir -p $GCPATH
+	mkdir -p "$GCPATH"
 	WINEPREFIX="$GCPATH" wine "$RLSET"
+	cp -rf "$PWDIR/gcmd/NewOption.dat" "$GCDIR"
     if [ -d "$GCDIR" ];then
 	bash "$0" --fix-shortcuts 
     fi
@@ -146,8 +150,9 @@ fi
 	echo "Iniciando o instalador..."
 	read -t 3
 	export WINEDEBUG="fixme-all,err-all,warn-cursor,-all"
-	mkdir -p $GCPATH
-	WINEPREFIX="$GCPATH" wine "$2"
+	mkdir -p "$GCPATH"
+	WINEPREFIX="$GCPATH" wine "$RLSET"
+	cp -rf "$PWDIR/gcmd/NewOption.dat" "$GCDIR"
     if [ -d "$GCDIR" ];then
 	bash "$0" --fix-shortcuts 
     fi
