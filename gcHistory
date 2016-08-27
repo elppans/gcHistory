@@ -211,7 +211,7 @@ fi
   ;;
 	-f|--fix|--fix-shortcuts)
     SCAPP="$HOME/.local/share/applications"
-
+##GCHLauncher
 if [ -e "$SCAPP/GrandChaseHistory.desktop" ];then
 ##SHORT=Y
 if [ -z "$2" ];then
@@ -287,83 +287,86 @@ fi
  fi
 
 fi
+##GCHLauncher
 
-if [ -e "$SCAPP/GrandChaseHistoryMain.desktop" ];then
+#GCHMain
+#if [ -e "$SCAPP/GrandChaseHistoryMain.desktop" ];then
 ##SHORT=Y
-if [ -z "$2" ];then
+#if [ -z "$2" ];then
 ###SHORTGM
-	echo "O atalho para o Grand Chase History Main já existe..."
-	read -p "Deseja sobrescrever e atualizar o atalho para \"Grand Chase History Main\"? (s/N)" SHORTGM
-  if [ -z $SHORTGM ];then
-	SHORTGM="N"
-  fi
+	#echo "O atalho para o Grand Chase History Main já existe..."
+	#read -p "Deseja sobrescrever e atualizar o atalho para \"Grand Chase History Main\"? (s/N)" SHORTGM
+  #if [ -z $SHORTGM ];then
+	#SHORTGM="N"
+  #fi
 ###SHORTGM
-else
- if [ "$2" = "-y" ];then
+#else
+ #if [ "$2" = "-y" ];then
 
-	SHORTGM="Y"
-     else
-  if [ "$2" = "-Y" ];then
-	SHORTGM="Y"
-    else
-	echo "Opção inválida!"
-	exit 0
-  fi
- fi
-fi
+	#SHORTGM="Y"
+     #else
+  #if [ "$2" = "-Y" ];then
+	#SHORTGM="Y"
+    #else
+	#echo "Opção inválida!"
+	#exit 0
+  #fi
+ #fi
+#fi
 ##SHORT=Y
-  case $SHORTGM in
-		n|N|no|No|NO|nO|não|Não|nÂo|nãO)
-	echo "O atalho \"Grand Chase History Main\" será mantido!"
-	sleep 3
-		;;
-		s|S|y|Y|yes|Yes|yEs|yeS|sim|Sim|sIm|siM)
-	rm -rf "$SCAPP/GrandChaseHistoryMain.desktop"
-	touch "$SCAPP/GrandChaseHistoryMain.desktop"
-	echo -e "[Desktop Entry]" >> "$SCAPP/GrandChaseHistoryMain.desktop"
-	echo -e "Encoding=UTF-8" >> "$SCAPP/GrandChaseHistoryMain.desktop"
-	echo -e "Name="Grand Chase History Main"" >> "$SCAPP/GrandChaseHistoryMain.desktop"
-	echo -e "Comment="Grand Chase History on Linux"" >> "$SCAPP/GrandChaseHistoryMain.desktop"
-	echo -e "Type=Application" >> "$SCAPP/GrandChaseHistoryMain.desktop"
-	echo "Exec=\"$WININST --main\"" >> "$SCAPP/GrandChaseHistoryMain.desktop"
-	echo "Icon="$PWDIR/ico/GrandChaseMain"" >> "$SCAPP/GrandChaseHistoryMain.desktop"
-	echo -e "Name[fr_FR]=GrandChase Main" >> "$SCAPP/GrandChaseHistoryMain.desktop"
-	echo -e "Terminal=OFF" >> "$SCAPP/GrandChaseHistoryMain.desktop"
-	echo -e "Categories=Game;" >> "$SCAPP/GrandChaseHistoryMain.desktop"
-	chmod +x "$SCAPP/GrandChaseHistoryMain.desktop"
-	echo "O atalho \"Grand Chase History Main\" foi atualizado..."
-	echo "Para acessar, acesse o menú do sistema, na categoria \"Game\"!"
-	read -t 3
-		;;
-		*)
-	echo "Opção inválida, digite $0 {-h|--help} para mais informações!"
-	exit 0
-		;;
-  esac
-   else
-	touch "$SCAPP/GrandChaseHistoryMain.desktop"
-	echo -e "[Desktop Entry]" >> "$SCAPP/GrandChaseHistoryMain.desktop"
-	echo -e "Encoding=UTF-8" >> "$SCAPP/GrandChaseHistoryMain.desktop"
-	echo -e "Name="Grand Chase History Main"" >> "$SCAPP/GrandChaseHistoryMain.desktop"
-	echo -e "Comment="Grand Chase History on Linux"" >> "$SCAPP/GrandChaseHistoryMain.desktop"
-	echo -e "Type=Application" >> "$SCAPP/GrandChaseHistoryMain.desktop"
-	echo "Exec=\"$WININST --main\"" >> "$SCAPP/GrandChaseHistoryMain.desktop"
-	echo "Icon="$PWDIR/ico/GrandChaseMain"" >> "$SCAPP/GrandChaseHistoryMain.desktop"
-	echo -e "Name[fr_FR]=GrandChase Main" >> "$SCAPP/GrandChaseHistoryMain.desktop"
-	echo -e "Terminal=OFF" >> "$SCAPP/GrandChaseHistoryMain.desktop"
-	echo -e "Categories=Game;" >> "$SCAPP/GrandChaseHistoryMain.desktop"
-	chmod +x "$SCAPP/GrandChaseHistoryMain.desktop"
+  #case $SHORTGM in
+	#	n|N|no|No|NO|nO|não|Não|nÂo|nãO)
+	#echo "O atalho \"Grand Chase History Main\" será mantido!"
+	#sleep 3
+		#;;
+	#	s|S|y|Y|yes|Yes|yEs|yeS|sim|Sim|sIm|siM)
+	#rm -rf "$SCAPP/GrandChaseHistoryMain.desktop"
+	#touch "$SCAPP/GrandChaseHistoryMain.desktop"
+	#echo -e "[Desktop Entry]" >> "$SCAPP/GrandChaseHistoryMain.desktop"
+	#echo -e "Encoding=UTF-8" >> "$SCAPP/GrandChaseHistoryMain.desktop"
+	#echo -e "Name="Grand Chase History Main"" >> "$SCAPP/GrandChaseHistoryMain.desktop"
+	#echo -e "Comment="Grand Chase History on Linux"" >> "$SCAPP/GrandChaseHistoryMain.desktop"
+	#echo -e "Type=Application" >> "$SCAPP/GrandChaseHistoryMain.desktop"
+	#echo "Exec=\"$WININST --main\"" >> "$SCAPP/GrandChaseHistoryMain.desktop"
+	#echo "Icon="$PWDIR/ico/GrandChaseMain"" >> "$SCAPP/GrandChaseHistoryMain.desktop"
+	#echo -e "Name[fr_FR]=GrandChase Main" >> "$SCAPP/GrandChaseHistoryMain.desktop"
+	#echo -e "Terminal=OFF" >> "$SCAPP/GrandChaseHistoryMain.desktop"
+	#echo -e "Categories=Game;" >> "$SCAPP/GrandChaseHistoryMain.desktop"
+	#chmod +x "$SCAPP/GrandChaseHistoryMain.desktop"
+	#echo "O atalho \"Grand Chase History Main\" foi atualizado..."
+	#echo "Para acessar, acesse o menú do sistema, na categoria \"Game\"!"
+	#read -t 3
+		#;;
+	#	*)
+	#echo "Opção inválida, digite $0 {-h|--help} para mais informações!"
+	#exit 0
+		#;;
+  #esac
+   #else
+	#touch "$SCAPP/GrandChaseHistoryMain.desktop"
+	#echo -e "[Desktop Entry]" >> "$SCAPP/GrandChaseHistoryMain.desktop"
+	#echo -e "Encoding=UTF-8" >> "$SCAPP/GrandChaseHistoryMain.desktop"
+	#echo -e "Name="Grand Chase History Main"" >> "$SCAPP/GrandChaseHistoryMain.desktop"
+	#echo -e "Comment="Grand Chase History on Linux"" >> "$SCAPP/GrandChaseHistoryMain.desktop"
+	#echo -e "Type=Application" >> "$SCAPP/GrandChaseHistoryMain.desktop"
+	#echo "Exec=\"$WININST --main\"" >> "$SCAPP/GrandChaseHistoryMain.desktop"
+	#echo "Icon="$PWDIR/ico/GrandChaseMain"" >> "$SCAPP/GrandChaseHistoryMain.desktop"
+	#echo -e "Name[fr_FR]=GrandChase Main" >> "$SCAPP/GrandChaseHistoryMain.desktop"
+	#echo -e "Terminal=OFF" >> "$SCAPP/GrandChaseHistoryMain.desktop"
+	#echo -e "Categories=Game;" >> "$SCAPP/GrandChaseHistoryMain.desktop"
+	#chmod +x "$SCAPP/GrandChaseHistoryMain.desktop"
 
- if [ -e "$SCAPP/GrandChaseHistoryMain.desktop" ];then
-	echo "Atalho para o Grand Chase History Main criado com sucesso"
-	echo "Acesse o Menú do sistema, na categoria \"Game\" para abrir o jogo!"
+ #if [ -e "$SCAPP/GrandChaseHistoryMain.desktop" ];then
+	#echo "Atalho para o Grand Chase History Main criado com sucesso"
+	#echo "Acesse o Menú do sistema, na categoria \"Game\" para abrir o jogo!"
 
-   else
-	echo "Falha ao criar o atalho..."
-	exit 0
- fi
+   #else
+	#echo "Falha ao criar o atalho..."
+	#exit 0
+ #fi
 
-fi
+#fi
+##GCHMain
 	exit 0
   ;;
 	-rs|--remove-shortcuts)
