@@ -12,9 +12,11 @@ INSTDIR=`dirname $0`
 cd $INSTDIR 
 PWDIR=`pwd`
 
+WINEX=wine
 
 WINDIR="$PWDIR/bin"
 WINLIB="$PWDIR/lib"
+#WINLIB64="$PWDIR/lib64"
 GCPMD="$PWDIR/gcmd"
 GCPATH="$PWDIR/gchmod"
 GCS32="$PWDIR/gchmod/drive_c/windows/system32"
@@ -26,7 +28,9 @@ WININST=`readlink -m "$0"`
 
 export PATH="$WINDIR:$PATH"
 export LD_LIBRARY_PATH="$WINLIB:$LD_LIBRARY_PATH"
+#export LD_LIBRARY_PATH="$WINLIB64:$LD_LIBRARY_PATH"
 export WINEARCH="win32"
+#export WINEARCH="win64"
 
 if ( whereis rsync | grep bin ) >> /dev/null ; then
 	CPYNC="rsync -dhar --info=progress2"
@@ -38,7 +42,7 @@ if [ -z "$1" ];then
 	export WINEDLLOVERRIDES="wmp=n;quartz=n;wmvcore=n;winegstreamer=;devenum=b"
 	export WINEDEBUG="fixme-all,err-all,warn+cursor,-all"
 	cd "$GCDIR"
-	WINEPREFIX="$GCPATH" wine "$GCEXEC"
+	WINEPREFIX="$GCPATH" "$WINEX" "$GCEXEC"
    else
  case "$1" in
 	-cvm|--create-virtual-machine)
@@ -51,15 +55,17 @@ if [ -d "$GCPATH" ];then
 	WINEPREFIX="$GCPATH" winetricks winxp --optout
 	#WINEPREFIX="$GCPATH" wine regsvr32 $GCDIR/mailmime.dll (mfc42 = dll dinâmico)
 	#WINEPREFIX="$GCPATH" winetricks -q dotnet40 --optout
-	WINEPREFIX="$GCPATH" winetricks -q dotnet45 --optout
+
 	WINEPREFIX="$GCPATH" winetricks -q mfc42 --optout
 	WINEPREFIX="$GCPATH" winetricks -q vcrun6 --optout
 	WINEPREFIX="$GCPATH" winetricks -q wmv9vcm --optout
-	WINEPREFIX="$GCPATH" winetricks -q wmp9 --optout
 	WINEPREFIX="$GCPATH" winetricks -q quartz --optout
-	WINEPREFIX="$GCPATH" winetricks -q allfonts --optout
+
+	WINEPREFIX="$GCPATH" winetricks --force -q dotnet45 --optout
+	WINEPREFIX="$GCPATH" winetricks --force -q wmp9 --optout
+	WINEPREFIX="$GCPATH" winetricks --force -q allfonts --optout
 	#WINEPREFIX="$GCPATH" winetricks -q vcrun2015 --optout (sem efeito)
-	WINEPREFIX="$GCPATH" winetricks win7 --optout
+	WINEPREFIX="$GCPATH" winetricks --force win7 --optout
 	[ -d $GCS32 ] && \
 			{
 		cp -R -f $GCS32/quartz.dll $GCS32/quartz.dll.old;
@@ -76,22 +82,19 @@ fi
 	exit 0
   ;;
 	-d|--debug)
-	export WINEDLLOVERRIDES="wmp=n;quartz=n;wmvcore=n;winegstreamer=;devenum=b"
 	export WINEDEBUG=""
 	cd "$GCDIR"
-	WINEPREFIX="$GCPATH" wine "$GCEXEC"
+	WINEPREFIX="$GCPATH" "$WINEX" "$GCEXEC"
   ;;
 	-m|--main)
-	export WINEDLLOVERRIDES="wmp=n;quartz=n;wmvcore=n;winegstreamer=;devenum=b"
 	export WINEDEBUG="fixme-all,err-all,warn-cursor,-all"
 	cd "$GCDIR"
-	WINEPREFIX="$GCPATH" wine "$GCMEXEC"
+	WINEPREFIX="$GCPATH" "$WINEX" "$GCMEXEC"
   ;;
 	-md|--main-debug)
-	export WINEDLLOVERRIDES="wmp=n;quartz=n;wmvcore=n;winegstreamer=;devenum=b"
 	export WINEDEBUG=""
 	cd "$GCDIR"
-	WINEPREFIX="$GCPATH" wine "$GCMEXEC"
+	WINEPREFIX="$GCPATH" "$WINEX" "$GCMEXEC"
   ;;
 	-i|--install)
    if [ -z "$2" ];then
@@ -102,16 +105,20 @@ fi
 	echo "O Grand Chase History já está instalado!"
 	exit 0
 		else
+	clear
 	echo "A instalar o Grand Chase History..."
 	read -t 2
 	echo "Durante a instalação, DESMARQUE a opção \"Criar um ícone na área de trabalho\"..."
+	read -t 3
+	echo "Após a instalação, DESMARQUE a opção \"Executar Grand Chase History\"..."
+	read -t 3
+	echo "Execute o jogo através do ícone criado no menú!"
 	read -t 5
 	echo "Iniciando o instalador..."
 	read -t 3
 	export WINEDEBUG="fixme-all,err-all,warn-cursor,-all"
-	mkdir -p "$GCPATH"
-	WINEPREFIX="$GCPATH" wine "$RLSET"
-	cp -rf "$PWDIR/gcmd/NewOption.dat" "$GCDIR"
+	mkdir -p $GCPATH
+	WINEPREFIX="$GCPATH" "$WINEX" "$RLSET"
     if [ -d "$GCDIR" ];then
 	bash "$0" --fix-shortcuts 
     fi
@@ -151,9 +158,8 @@ fi
 	echo "Iniciando o instalador..."
 	read -t 3
 	export WINEDEBUG="fixme-all,err-all,warn-cursor,-all"
-	mkdir -p "$GCPATH"
-	WINEPREFIX="$GCPATH" wine "$RLSET"
-	cp -rf "$PWDIR/gcmd/NewOption.dat" "$GCDIR"
+	mkdir -p $GCPATH
+	WINEPREFIX="$GCPATH" "$WINEX" "$2"
     if [ -d "$GCDIR" ];then
 	bash "$0" --fix-shortcuts 
     fi
@@ -212,7 +218,7 @@ fi
   ;;
 	-f|--fix|--fix-shortcuts)
     SCAPP="$HOME/.local/share/applications"
-##GCHLauncher
+
 if [ -e "$SCAPP/GrandChaseHistory.desktop" ];then
 ##SHORT=Y
 if [ -z "$2" ];then
@@ -288,9 +294,7 @@ fi
  fi
 
 fi
-##GCHLauncher
 
-#GCHMain
 #if [ -e "$SCAPP/GrandChaseHistoryMain.desktop" ];then
 ##SHORT=Y
 #if [ -z "$2" ];then
@@ -367,7 +371,6 @@ fi
  #fi
 
 #fi
-##GCHMain
 	exit 0
   ;;
 	-rs|--remove-shortcuts)
@@ -486,7 +489,7 @@ fi
 
   ;;
 	-V|--version)
-	wine --version
+	"$WINEX" --version
 	exit 0
   ;;
 	-h|--help)
