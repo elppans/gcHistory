@@ -54,14 +54,14 @@ if [ -d "$GCPATH" ];then
 	WINEPREFIX="$GCPATH" winepath
 	WINEPREFIX="$GCPATH" winetricks winxp --optout
 	#WINEPREFIX="$GCPATH" wine regsvr32 $GCDIR/mailmime.dll (mfc42 = dll dinâmico)
-	#WINEPREFIX="$GCPATH" winetricks -q dotnet40 --optout
+	WINEPREFIX="$GCPATH" winetricks -q dotnet40 --optout
 
 	WINEPREFIX="$GCPATH" winetricks -q mfc42 --optout
 	WINEPREFIX="$GCPATH" winetricks -q vcrun6 --optout
 	WINEPREFIX="$GCPATH" winetricks -q wmv9vcm --optout
 	WINEPREFIX="$GCPATH" winetricks -q quartz --optout
 
-	WINEPREFIX="$GCPATH" winetricks --force -q dotnet45 --optout
+	#WINEPREFIX="$GCPATH" winetricks --force -q dotnet45 --optout
 	WINEPREFIX="$GCPATH" winetricks --force -q wmp9 --optout
 	WINEPREFIX="$GCPATH" winetricks --force -q allfonts --optout
 	#WINEPREFIX="$GCPATH" winetricks -q vcrun2015 --optout (sem efeito)
