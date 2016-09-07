@@ -119,6 +119,7 @@ fi
 	export WINEDEBUG="fixme-all,err-all,warn-cursor,-all"
 	mkdir -p $GCPATH
 	WINEPREFIX="$GCPATH" "$WINEX" "$RLSET"
+	$CPYNC "$PWDIR/gcmd/NewOption.dat" "$GCDIR"
     if [ -d "$GCDIR" ];then
 	bash "$0" --fix-shortcuts 
     fi
@@ -159,7 +160,8 @@ fi
 	read -t 3
 	export WINEDEBUG="fixme-all,err-all,warn-cursor,-all"
 	mkdir -p $GCPATH
-	WINEPREFIX="$GCPATH" "$WINEX" "$2"
+	WINEPREFIX="$GCPATH" "$WINEX" "$RLSET"
+	$CPYNC "$PWDIR/gcmd/NewOption.dat" "$GCDIR"
     if [ -d "$GCDIR" ];then
 	bash "$0" --fix-shortcuts 
     fi
