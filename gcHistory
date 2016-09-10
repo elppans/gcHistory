@@ -31,6 +31,7 @@ export LD_LIBRARY_PATH="$WINLIB:$LD_LIBRARY_PATH"
 #export LD_LIBRARY_PATH="$WINLIB64:$LD_LIBRARY_PATH"
 export WINEARCH="win32"
 #export WINEARCH="win64"
+EXDLL="wmp=n;quartz=n;wmvcore=n;winegstreamer=;devenum=b"
 
 if ( whereis rsync | grep bin ) >> /dev/null ; then
 	CPYNC="rsync -dhar --info=progress2"
@@ -39,7 +40,7 @@ if ( whereis rsync | grep bin ) >> /dev/null ; then
 fi
 
 if [ -z "$1" ];then
-	export WINEDLLOVERRIDES="wmp=n;quartz=n;wmvcore=n;winegstreamer=;devenum=b"
+	export WINEDLLOVERRIDES="$EXDLL"
 	export WINEDEBUG="fixme-all,err-all,warn+cursor,-all"
 	cd "$GCDIR"
 	WINEPREFIX="$GCPATH" "$WINEX" "$GCEXEC"
@@ -68,8 +69,8 @@ if [ -d "$GCPATH" ];then
 	WINEPREFIX="$GCPATH" winetricks --force win7 --optout
 	[ -d $GCS32 ] && \
 			{
-		cp -R -f $GCS32/quartz.dll $GCS32/quartz.dll.old;
-		cp -R -f $GCS32/quartz.dll $GCPMD/quartz.dll;
+		"$CPYNC" "$GCS32/quartz.dll" "$GCS32/quartz.dll.old";
+		"$CPYNC" "$GCS32/quartz.dll" "$GCPMD/quartz.dll";
 			}
   if [ -d "$GCPATH" ];then
 	echo "Máquina virtual criada com sucesso..."
@@ -82,20 +83,21 @@ fi
 	exit 0
   ;;
 	-d|--debug)
+	export WINEDLLOVERRIDES="$EXDLL"
 	export WINEDEBUG=""
 	cd "$GCDIR"
 	WINEPREFIX="$GCPATH" "$WINEX" "$GCEXEC"
   ;;
-	-m|--main)
-	export WINEDEBUG="fixme-all,err-all,warn-cursor,-all"
-	cd "$GCDIR"
-	WINEPREFIX="$GCPATH" "$WINEX" "$GCMEXEC"
-  ;;
-	-md|--main-debug)
-	export WINEDEBUG=""
-	cd "$GCDIR"
-	WINEPREFIX="$GCPATH" "$WINEX" "$GCMEXEC"
-  ;;
+	# -m|--main)
+	#export WINEDEBUG="fixme-all,err-all,warn-cursor,-all"
+	#cd "$GCDIR"
+	#WINEPREFIX="$GCPATH" "$WINEX" "$GCMEXEC"
+  #;;
+	# -md|--main-debug)
+	#export WINEDEBUG=""
+	#cd "$GCDIR"
+	#WINEPREFIX="$GCPATH" "$WINEX" "$GCMEXEC"
+  #;;
 	-i|--install)
    if [ -z "$2" ];then
 	echo "Deve escolher o instalador do Grand Chase History para ser instalado!"
@@ -119,6 +121,7 @@ fi
 	export WINEDEBUG="fixme-all,err-all,warn-cursor,-all"
 	mkdir -p $GCPATH
 	WINEPREFIX="$GCPATH" "$WINEX" "$RLSET"
+	#$CPYNC "$GCDIR/NewOption.dat" "$GCDIR/NewOption.dat.old"
 	$CPYNC "$PWDIR/gcmd/NewOption.dat" "$GCDIR"
     if [ -d "$GCDIR" ];then
 	bash "$0" --fix-shortcuts 
@@ -506,8 +509,6 @@ Argumentos obrigatórios para opções longas também o são para as opções cu
 
   -h,   --help                         Emite esta ajuda
   -d,   --debug                        Executa o jogo em DEBUG MODE
-  -m,   --main                         Executa o jogo usando o Main em vez do Launcher
-  -md,  --main-debug                   Executa o jogo usando o Main em DEBUG MODE
   -i,   --install {Instalador.exe}     Instala o jogo em seu Usuário Atual
   -ri,  --reinstall  {Instalador.exe}  Faz um Backup do jogo instalado e reinstala por cima
   -rb,  --remove-backup                Remove o Backup criado ao reinstalar o jogo
@@ -524,6 +525,9 @@ Argumentos obrigatórios para opções longas também o são para as opções cu
 '
 	exit 0
   ;;
+#Opçoes desativadas:
+#  -m,   --main                         Executa o jogo usando o Main em vez do Launcher
+#  -md,  --main-debug                   Executa o jogo usando o Main em DEBUG MODE
 
 	*)
 	echo -e "\nErro ao completar o comando...\nDigite "$0" {-h|--help} para mais informações!"
