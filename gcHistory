@@ -65,12 +65,12 @@ if [ -d "$GCPATH" ];then
 	#WINEPREFIX="$GCPATH" winetricks --force -q dotnet45 --optout
 	WINEPREFIX="$GCPATH" winetricks --force -q wmp9 --optout
 	WINEPREFIX="$GCPATH" winetricks --force -q allfonts --optout
-	#WINEPREFIX="$GCPATH" winetricks -q vcrun2015 --optout (sem efeito)
+	WINEPREFIX="$GCPATH" winetricks -q vcrun2015 --optout
 	WINEPREFIX="$GCPATH" winetricks --force win7 --optout
 	[ -d $GCS32 ] && \
 			{
-		"$CPYNC" "$GCS32/quartz.dll" "$GCS32/quartz.dll.old";
-		"$CPYNC" "$GCS32/quartz.dll" "$GCPMD/quartz.dll";
+		$CPYNC "$GCS32/quartz.dll" "$GCS32/quartz.dll.old"; # Acertar
+		$CPYNC "$GCS32/quartz.dll" "$GCPMD/quartz.dll"; # Acertar
 			}
   if [ -d "$GCPATH" ];then
 	echo "Máquina virtual criada com sucesso..."
