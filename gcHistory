@@ -5,6 +5,9 @@ if [ `id -u` = 0 ];then
 	exit
 fi
 
+# Monitor Auto SET [ 0 = OFF | 1 = ON ]
+XMONCFG=1
+
 RLSET=`readlink -m "$2"`
 
 INSTDIR=`dirname $0`
@@ -40,6 +43,11 @@ if ( whereis rsync | grep bin ) >> /dev/null ; then
 fi
 
 if [ -z "$1" ];then
+	[ "$XMONCFG" = 1 ] && \
+ {
+	bash "$0" -mcs
+	exit 0
+ }
 	export WINEDLLOVERRIDES="$EXDLL"
 	export WINEDEBUG="fixme-all,err-all,warn+cursor,-all"
 	cd "$GCDIR"
@@ -493,6 +501,45 @@ if [ -z "$VIRTDESKDIM" ];then
 fi
 
   ;;
+	-mcl|--monitor-config-list)
+	echo "Listando resoluções suportadas do monitor..."
+	xrandr --q1
+	exit 0
+  ;;
+	-mcs|--monitor-config-set)
+XYCFG=$2
+XCFG00=1680x1050
+XCFG01=`xrandr|awk 'BEGIN {} /^.*\*/{printf("%s;", $1)} END {}' | cut -d ";" -f "1"`
+
+echo "$XCFG01" > "$GCPMD/xmon.cfg"
+
+if [ -z "$XYCFG" ] ; then
+
+DEFAULT=$(xrandr|awk 'BEGIN {} /^.*primary/{printf("%s;", $1)} END {}' | cut -d ";" -f "1" )
+xrandr --output $DEFAULT --mode "$XCFG00"
+
+	export WINEDLLOVERRIDES="$EXDLL"
+	export WINEDEBUG="fixme-all,err-all,warn+cursor,-all"
+	cd "$GCDIR"
+	WINEPREFIX="$GCPATH" "$WINEX" "$GCEXEC"
+	#read
+xrandr --output $DEFAULT --mode `cat $GCPMD/xmon.cfg`
+
+else
+
+DEFAULT=$(xrandr|awk 'BEGIN {} /^.*primary/{printf("%s;", $1)} END {}' | cut -d ";" -f "1" )
+xrandr --output $DEFAULT --mode "$XYCFG"
+
+	export WINEDLLOVERRIDES="$EXDLL"
+	export WINEDEBUG="fixme-all,err-all,warn+cursor,-all"
+	cd "$GCDIR"
+	WINEPREFIX="$GCPATH" "$WINEX" "$GCEXEC"
+	read -t 30
+
+xrandr --output $DEFAULT --mode `cat "$GCPMD"/xmon.cfg`
+
+fi
+  ;;
 	-V|--version)
 	"$WINEX" --version
 	exit 0
@@ -518,10 +565,36 @@ Argumentos obrigatórios para opções longas também o são para as opções cu
   -rg,  --remove-game                  Remove o jogo por completo de seu Usuário Atual
   -wt,  --winetricks                   Abre o configurador Winetricks em modo GUI
   -xt,  --xterm                        Abre o Terminal XTERM usando a máquina virtual do Grand Chase History.
+  -mcl,  --monitor-config-list         Lista resoluções suportadas do monitor para usar no jogo
+  -mcs,  --monitor-config-set          Carrega o jogo com a resolução definida [ Ao sair do jogo retorna a resolução anterior ]
   -cvm, --create-virtual-machine       Cria a Máquina Virtual do Wine para que possa instalar e jogar o Grand Chase History
   -rvm, --remove-virtual-machine       Remove a Máquina Virtual do Wine de forma recursiva. [Cuidado ao usar esta opção]
   -svd, --set-virtual-desktop          Ativa o Desktop Virtual do Wine e configura sua resolução [ off para desativar ]
   -V,  --version                       Mostra a versão do Wine usado e sai
+
+  Alguns Exemplos:
+
+  Instalar o jogo Grand Chase History
+
+  gcHistory -i /caminho/setup.exe
+
+  Apenas executar o jogo:
+
+  gcHistory
+
+  Listar resolução suportada do monitor:
+
+  gcHistory -mcl
+
+  Executar o jogo com uma resolução suportada definida, para o exemplo 1280x720:
+
+  Se setar resolução errada, o jogo é executado sem setar a configuração definida
+  A resolução do jogo deve ser EXATAMENTE o mesmo que a resolução escolhida.
+  Se omitido, será setado automaticamente para a resolução 1680x1050
+
+
+  gcHistory -mcs 1280x720
+
 '
 	exit 0
   ;;
