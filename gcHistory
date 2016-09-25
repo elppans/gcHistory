@@ -204,7 +204,7 @@ if [ -d "$GCPATH" ];then
 	#WINEPREFIX="$GCPATH" winetricks --force -q dotnet45 --optout
 	WINEPREFIX="$GCPATH" winetricks --force -q wmp9 --optout
 	WINEPREFIX="$GCPATH" winetricks --force -q allfonts --optout
-	WINEPREFIX="$GCPATH" winetricks -q vcrun2015 --optout
+	#WINEPREFIX="$GCPATH" winetricks -q vcrun2015 --optout
 	WINEPREFIX="$GCPATH" winetricks --force win7 --optout
 	[ -d $GCS32 ] && \
 			{
