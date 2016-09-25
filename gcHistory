@@ -1,7 +1,138 @@
 #!/bin/bash
 
+#TXT
+  case $LANG in
+   pt*) GCHMSG001="Não pode ser root!"
+GCHMSG002="O path Wine já existe!"
+GCHMSG003="Máquina virtual criada com sucesso..."
+GCHMSG004="Falha ao criar a máquina virtual para o jogo!"
+GCHMSG005="Deve escolher o instalador do Grand Chase History para ser instalado!"
+GCHMSG006="O Grand Chase History já está instalado!"
+GCHMSG007="A instalar o Grand Chase History..."
+GCHMSG008="Durante a instalação, DESMARQUE a opção \"Criar um ícone na área de trabalho\"..."
+GCHMSG009="Após a instalação, DESMARQUE a opção \"Executar Grand Chase History\"..."
+GCHMSG010="Execute o jogo através do ícone criado no menú!"
+GCHMSG011="Iniciando o instalador..."
+GCHMSG012="Deve escolher o instalador do Grand Chase History para ser reinstalado!"
+GCHMSG013="A preparar Backup do Grand Chase History..."
+GCHMSG014="Copiando o Grand Chase History para o cache de Backup..."
+GCHMSG015="O Backup foi criado com sucesso!"
+GCHMSG016="O Backup não foi criado com sucesso!"
+GCHMSG017="O Backup não foi criado com sucesso!"
+GCHMSG018="A reinstalar o Grand Chase History..."
+GCHMSG019="Durante a reinstalação, DESMARQUE a opção \"Criar um ícone na área de trabalho\"..."
+GCHMSG020="Iniciando o instalador..."
+GCHMSG021="Use a opção {-i|--install} para instalar o Grand Chase History!"
+GCHMSG022="A excluir o Backup do Grand Chase History..."
+GCHMSG023="O Backup não foi removido!"
+GCHMSG024="O Backup foi removido com sucesso!"
+GCHMSG025="A pasta de Backup do Grand Chase History não existe!"
+GCHMSG026="Removendo a instalação atual do Grand Chase History..."
+GCHMSG027="Restaurando o Backup..."
+GCHMSG028="A restauração foi feita com sucesso..."
+GCHMSG029="Removendo a pasta de Backup..."
+GCHMSG030="A restauração foi quebrada!"
+GCHMSG031="A restauração foi quebrada!"
+GCHMSG032="Não existe backup a ser restaurado!"
+GCHMSG033="O atalho para o Grand Chase History já existe..."
+GCHMSG034="Deseja sobrescrever e atualizar o atalho para \"Grand Chase History\"? (s/N)"
+GCHMSG035="Opção inválida!"
+GCHMSG036="O atalho \"Grand Chase History\" será mantido!"
+GCHMSG037="O atalho \"Grand Chase History\" foi atualizado..."
+GCHMSG038="para acessar, acesse o menú do sistema, na categoria \"Game\"!"
+GCHMSG039="Opção inválida, digite $0 {-h|--help} para mais informações!"
+GCHMSG040="Atalho para o Grand Chase History criado com sucesso"
+GCHMSG041="Acesse o Menú do sistema, na categoria \"Game\" para abrir o jogo!"
+GCHMSG042="Falha ao criar o atalho Grand Chase History!"
+GCHMSG043="O atalho do Grand Chase History não foi removido!"
+GCHMSG044="O atalho do Grand Chase History foi removido com sucesso!"
+GCHMSG045="O atalho para o Grand Chase History não existe ou já foi removido!"
+GCHMSG046="O atalho do Grand Chase History Main não foi removido!"
+GCHMSG047="O atalho do Grand Chase History Main foi removido com sucesso!"
+GCHMSG048="O atalho para o Grand Chase History Main não existe ou já foi removido!"
+GCHMSG049="O jogo Grand Chase History não foi removido com exito!"
+GCHMSG050="O jogo Grand Chase History foi removido com sucesso!"
+GCHMSG051="O jogo Grand Chase History não existe ou já foi removido!"
+GCHMSG052="O jogo Grand Chase History depende da máquina virtual para rodar..."
+GCHMSG053="Tem certeza que quer remover a máquina virtual?"
+GCHMSG054="Digite uma das opções [Sim(S)|Não(N)] : "
+GCHMSG055="A Máquina Virtual do \"Grand Chase History\" será mantido!"
+GCHMSG056="Removendo a máquina virtual do Grand Chase History..."
+GCHMSG057="A Máquina Virtual do \"Grand Chase History\" foi removido com exito!"
+GCHMSG058="A Máquina Virtual do \"Grand Chase History\" não foi removido com sucesso!"
+GCHMSG059="Opção inválida, digite $0 {-h|--help} para mais informações!"
+GCHMSG060="A Máquina Virtual do \"Grand Chase History\" não existe ou já foi removido!"
+GCHMSG061="Lendo informações do seu monitor:
+"
+GCHMSG062="
+Informe a resolução desejada para a Área de trabalho Virtual..."
+GCHMSG063="Se omitido, será configurado para "1280x1024"..."
+GCHMSG064="Para desativar a àrea de Trabalho Virtual, digite "off" no lugar da resolução.
+"
+GCHMSG065="Resolução do Monitor Virtual [ "off" para desativado ] : "
+GCHMSG066="Listando resoluções suportadas do monitor..."
+GCHMSG067='
+gcHistory, um aplicativo CLI para ajudar a jogar Grand Chase History em sistemas "não nativos" de sua origem.
+Uso: gcHistory [OPÇÃO]... [EXE]...
+
+Argumentos obrigatórios para opções longas também o são para as opções curtas.
+
+	Se omitido, iniciará o jogo via Launcher!
+
+
+  -h,   --help                         Emite esta ajuda
+  -d,   --debug                        Executa o jogo em DEBUG MODE
+  -i,   --install {Instalador.exe}     Instala o jogo em seu Usuário Atual
+  -ri,  --reinstall  {Instalador.exe}  Faz um Backup do jogo instalado e reinstala por cima
+  -rb,  --remove-backup                Remove o Backup criado ao reinstalar o jogo
+  -re,  --restore-backup               Remove o jogo reinstalado e restaura o Backup no lugar
+  -f,   --fix, --fix-shortcuts         Instala/atualiza um atalho do Launcher e Main no menú do sistema
+  -rs,  --remove-shortcuts             Remove o atalho do Launcher e do Main do menú do sistema
+  -rg,  --remove-game                  Remove o jogo por completo de seu Usuário Atual
+  -wt,  --winetricks                   Abre o configurador Winetricks em modo GUI
+  -xt,  --xterm                        Abre o Terminal XTERM usando a máquina virtual do Grand Chase History.
+  -mcl,  --monitor-config-list         Lista resoluções suportadas do monitor para usar no jogo
+  -mcs,  --monitor-config-set          Carrega o jogo com a resolução definida [ Ao sair do jogo retorna a resolução anterior ]
+  -cvm, --create-virtual-machine       Cria a Máquina Virtual do Wine para que possa instalar e jogar o Grand Chase History
+  -rvm, --remove-virtual-machine       Remove a Máquina Virtual do Wine de forma recursiva. [Cuidado ao usar esta opção]
+  -svd, --set-virtual-desktop          Ativa o Desktop Virtual do Wine e configura sua resolução [ off para desativar ]
+  -V,  --version                       Mostra a versão do Wine usado e sai
+
+  Alguns Exemplos:
+
+  Instalar o jogo Grand Chase History
+
+  gcHistory -i /caminho/setup.exe
+
+  Apenas executar o jogo:
+
+  gcHistory
+
+  Listar resolução suportada do monitor:
+
+  gcHistory -mcl
+
+  Executar o jogo com uma resolução suportada definida, para o exemplo 1280x720:
+
+  Se setar resolução errada, o jogo é executado sem setar a configuração definida
+  A resolução do jogo deve ser EXATAMENTE o mesmo que a resolução escolhida.
+  Se omitido, será setado automaticamente para a resolução 1680x1050
+
+
+  gcHistory -mcs 1280x720
+
+'
+GCHMSG068="Erro ao completar o comando...
+Digite "$0" {-h|--help} para mais informações!"
+ ;;
+   *) GCMSG001=
+
+ ;;
+  esac
+#TXT
+
 if [ `id -u` = 0 ];then
-	echo "Não pode ser root!"
+	echo "$GCHMSG001"
 	exit
 fi
 
@@ -57,7 +188,7 @@ if [ -z "$1" ];then
 	-cvm|--create-virtual-machine)
 	export WINEDEBUG="fixme-all,err-all,warn+cursor,-all"
 if [ -d "$GCPATH" ];then
-	echo "O path Wine já existe!"
+	echo "$GCHMSG002"
 	exit 0
    else
 	WINEPREFIX="$GCPATH" winepath
@@ -81,10 +212,10 @@ if [ -d "$GCPATH" ];then
 		$CPYNC "$GCS32/quartz.dll" "$GCPMD/quartz.dll"; # Acertar
 			}
   if [ -d "$GCPATH" ];then
-	echo "Máquina virtual criada com sucesso..."
+	echo "$GCHMSG003"
 	read -t 5
      else
-	echo "Falha ao criar a máquina virtual para o jogo!"
+	echo "$GCHMSG004"
 	exit 0
   fi
 fi
@@ -96,41 +227,35 @@ fi
 	cd "$GCDIR"
 	WINEPREFIX="$GCPATH" "$WINEX" "$GCEXEC"
   ;;
-	# -m|--main)
-	#export WINEDEBUG="fixme-all,err-all,warn-cursor,-all"
-	#cd "$GCDIR"
-	#WINEPREFIX="$GCPATH" "$WINEX" "$GCMEXEC"
-  #;;
-	# -md|--main-debug)
-	#export WINEDEBUG=""
-	#cd "$GCDIR"
-	#WINEPREFIX="$GCPATH" "$WINEX" "$GCMEXEC"
-  #;;
 	-i|--install)
    if [ -z "$2" ];then
-	echo "Deve escolher o instalador do Grand Chase History para ser instalado!"
+	echo "$GCHMSG005"
 	exit 0
    fi
 	if [ -d "$GCDIR" ];then
-	echo "O Grand Chase History já está instalado!"
+	echo "$GCHMSG006"
 	exit 0
 		else
 	clear
-	echo "A instalar o Grand Chase History..."
+	echo "$GCHMSG007"
 	read -t 2
-	echo "Durante a instalação, DESMARQUE a opção \"Criar um ícone na área de trabalho\"..."
+	echo "$GCHMSG008"
 	read -t 3
-	echo "Após a instalação, DESMARQUE a opção \"Executar Grand Chase History\"..."
+	echo "$GCHMSG009"
 	read -t 3
-	echo "Execute o jogo através do ícone criado no menú!"
+	echo "$GCHMSG010"
 	read -t 5
-	echo "Iniciando o instalador..."
+	echo "$GCHMSG011"
 	read -t 3
 	export WINEDEBUG="fixme-all,err-all,warn-cursor,-all"
 	mkdir -p $GCPATH
 	WINEPREFIX="$GCPATH" "$WINEX" "$RLSET"
 	#$CPYNC "$GCDIR/NewOption.dat" "$GCDIR/NewOption.dat.old"
 	$CPYNC "$PWDIR/gcmd/NewOption.dat" "$GCDIR"
+	[ -d "$HOME/.local/share/applications/wine/Programs/Grand Chase History" ] && \
+			{
+		rm -rf "$HOME/.local/share/applications/wine/Programs/Grand Chase History" >> /dev/null
+			}
     if [ -d "$GCDIR" ];then
 	bash "$0" --fix-shortcuts 
     fi
@@ -138,46 +263,50 @@ fi
   ;;
 	-ri|--reinstall)
    if [ -z "$2" ];then
-	echo "Deve escolher o instalador do Grand Chase History para ser reinstalado!"
+	echo "$GCHMSG012"
 	exit 0
    fi
 	if [ -d "$GCDIR" ];then
-	echo "A preparar Backup do Grand Chase History..."
+	echo "$GCHMSG013"
 	read -t 3
 	mkdir -p "$GCPATH/gch_bkp"
 	GCHBKP="$GCPATH/gch_bkp"
-	echo "Copiando o Grand Chase History para o cache de Backup..."
+	echo "$GCHMSG014"
 	$CPYNC "$GCDIR" "$GCHBKP"
 	GCHBKPB="$GCHBKP/Grand Chase History"
   if [ -d "$GCHBKPB" ];then
 	GCHD=`du -s "$GCDIR" | cut -d "/" -f "1"`
 	GCHB=`du -s "$GCHBKPB" | cut -d "/" -f "1"`
    if [ "$GCHD" -eq "$GCHB" ];then
-	echo "O Backup foi criado com sucesso!"
+	echo "$GCHMSG015"
 	read -t 3
                 else
-	echo "O Backup não foi criado com sucesso!"
+	echo "$GCHMSG016"
 	exit 0
    fi
     else
-	echo "O Backup não foi criado com sucesso!"
+	echo "$GCHMSG017"
 	exit 0
   fi
-	echo "A reinstalar o Grand Chase History..."
+	echo "$GCHMSG018"
 	read -t 2
-	echo "Durante a reinstalação, DESMARQUE a opção \"Criar um ícone na área de trabalho\"..."
+	echo "$GCHMSG019"
 	read -t 5
-	echo "Iniciando o instalador..."
+	echo "$GCHMSG020"
 	read -t 3
 	export WINEDEBUG="fixme-all,err-all,warn-cursor,-all"
 	mkdir -p $GCPATH
 	WINEPREFIX="$GCPATH" "$WINEX" "$RLSET"
 	$CPYNC "$PWDIR/gcmd/NewOption.dat" "$GCDIR"
+	[ -d "$HOME/.local/share/applications/wine/Programs/Grand Chase History" ] && \
+			{
+		rm -rf "$HOME/.local/share/applications/wine/Programs/Grand Chase History" >> /dev/null
+			}
     if [ -d "$GCDIR" ];then
 	bash "$0" --fix-shortcuts 
     fi
 		else
-	echo "Use a opção {-i|--install} para instalar o Grand Chase History!"
+	echo "$GCHMSG021"
 	exit 0
 	fi
   ;;
@@ -185,17 +314,17 @@ fi
     GCHBKP="$GCPATH/gch_bkp"
     GCHBKPB="$GCHBKP/Grand Chase History"
 if [ -d "$GCHBKPB" ];then
-	echo "A excluir o Backup do Grand Chase History..."
+	echo "$GCHMSG022"
 	rm -R -f "$GCHBKPB"
   if [ -d "$GCHBKPB" ];then
-	echo "O Backup não foi removido!"
+	echo "$GCHMSG023"
 	exit 0
 		else
-	echo "O Backup foi removido com sucesso!"
+	echo "$GCHMSG024"
 	exit 0
   fi
     else
-	echo "A pasta de Backup do Grand Chase History não existe!"
+	echo "$GCHMSG025"
 	exit 0
 fi
   ;;
@@ -203,29 +332,29 @@ fi
     GCHBKP="$GCPATH/gch_bkp"
     GCHBKPB="$GCHBKP/Grand Chase History"
 if [ -d "$GCHBKPB" ];then
-	echo "Removendo a instalação atual do Grand Chase History..."
+	echo "$GCHMSG026"
 	read -t 3
 	rm -R -f $GCDIR
-	echo "Restaurando o Backup..."
+	echo "$GCHMSG027"
 	$CPYNC "$GCHBKP" "$GCDIR"
   if [ -d "$GCDIR" ];then
 	GCHD=`du -s "$GCDIR" | cut -d "/" -f "1"`
 	GCHB=`du -s "$GCHBKPB" | cut -d "/" -f "1"`
    if [ "$GCHD" -eq "$GCHB" ];then
-	echo "A restauração foi feita com sucesso..."
+	echo "$GCHMSG028"
 	read -t 3
-	echo "Removendo a pasta de Backup..."
+	echo "$GCHMSG029"
 	rm -R -f $GCHBKPB
                 else
-	echo "A restauração foi quebrada!"
+	echo "$GCHMSG030"
 	exit 0
    fi
     else
-	echo "A restauração foi quebrada!"
+	echo "$GCHMSG031"
 	exit 0
   fi
 	else
-	echo "Não existe backup a ser restaurado!"
+	echo "$GCHMSG032"
 	exit
 fi
   ;;
@@ -236,8 +365,8 @@ if [ -e "$SCAPP/GrandChaseHistory.desktop" ];then
 ##SHORT=Y
 if [ -z "$2" ];then
 ###SHORTGC
-	echo "O atalho para o Grand Chase History já existe..."
-	read -p "Deseja sobrescrever e atualizar o atalho para \"Grand Chase History\"? (s/N)" SHORTGC
+	echo "$GCHMSG033"
+	read -p "$GCHMSG034" SHORTGC
   if [ -z $SHORTGC ];then
 	SHORTGC="N"
   fi
@@ -250,7 +379,7 @@ else
   if [ "$2" = "-Y" ];then
 	SHORTGC="Y"
     else
-	echo "Opção inválida!"
+	echo "$GCHMSG035"
 	exit 0
   fi
  fi
@@ -258,7 +387,7 @@ fi
 ##SHORT=Y
   case $SHORTGC in
 		n|N|no|No|NO|nO|não|Não|nÂo|nãO)
-	echo "O atalho \"Grand Chase History\" será mantido!"
+	echo "$GCHMSG036"
 	sleep 3
 		;;
 		s|S|y|Y|yes|Yes|yEs|yeS|sim|Sim|sIm|siM)
@@ -275,12 +404,12 @@ fi
 	echo -e "Terminal=OFF" >> "$SCAPP/GrandChaseHistory.desktop"
 	echo -e "Categories=Game;" >> "$SCAPP/GrandChaseHistory.desktop"
 	chmod +x "$SCAPP/GrandChaseHistory.desktop"
-	echo "O atalho \"Grand Chase History\" foi atualizado..."
-	echo "para acessar, acesse o menú do sistema, na categoria \"Game\"!"
+	echo "$GCHMSG037"
+	echo "$GCHMSG038"
 	read -t 3
 		;;
 		*)
-	echo "Opção inválida, digite $0 {-h|--help} para mais informações!"
+	echo "$GCHMSG039"
 	exit 0
 		;;
   esac
@@ -299,91 +428,14 @@ fi
 	chmod +x "$SCAPP/GrandChaseHistory.desktop"
 
  if [ -e "$SCAPP/GrandChaseHistory.desktop" ];then
-	echo "Atalho para o Grand Chase History criado com sucesso"
-	echo "Acesse o Menú do sistema, na categoria \"Game\" para abrir o jogo!"
+	echo "$GCHMSG040"
+	echo "$GCHMSG041"
    else
-	echo "Falha ao criar o atalho Grand Chase History!"
+	echo "$GCHMSG042"
 	exit 0
  fi
 
 fi
-
-#if [ -e "$SCAPP/GrandChaseHistoryMain.desktop" ];then
-##SHORT=Y
-#if [ -z "$2" ];then
-###SHORTGM
-	#echo "O atalho para o Grand Chase History Main já existe..."
-	#read -p "Deseja sobrescrever e atualizar o atalho para \"Grand Chase History Main\"? (s/N)" SHORTGM
-  #if [ -z $SHORTGM ];then
-	#SHORTGM="N"
-  #fi
-###SHORTGM
-#else
- #if [ "$2" = "-y" ];then
-
-	#SHORTGM="Y"
-     #else
-  #if [ "$2" = "-Y" ];then
-	#SHORTGM="Y"
-    #else
-	#echo "Opção inválida!"
-	#exit 0
-  #fi
- #fi
-#fi
-##SHORT=Y
-  #case $SHORTGM in
-	#	n|N|no|No|NO|nO|não|Não|nÂo|nãO)
-	#echo "O atalho \"Grand Chase History Main\" será mantido!"
-	#sleep 3
-		#;;
-	#	s|S|y|Y|yes|Yes|yEs|yeS|sim|Sim|sIm|siM)
-	#rm -rf "$SCAPP/GrandChaseHistoryMain.desktop"
-	#touch "$SCAPP/GrandChaseHistoryMain.desktop"
-	#echo -e "[Desktop Entry]" >> "$SCAPP/GrandChaseHistoryMain.desktop"
-	#echo -e "Encoding=UTF-8" >> "$SCAPP/GrandChaseHistoryMain.desktop"
-	#echo -e "Name="Grand Chase History Main"" >> "$SCAPP/GrandChaseHistoryMain.desktop"
-	#echo -e "Comment="Grand Chase History on Linux"" >> "$SCAPP/GrandChaseHistoryMain.desktop"
-	#echo -e "Type=Application" >> "$SCAPP/GrandChaseHistoryMain.desktop"
-	#echo "Exec=\"$WININST --main\"" >> "$SCAPP/GrandChaseHistoryMain.desktop"
-	#echo "Icon="$PWDIR/ico/GrandChaseMain"" >> "$SCAPP/GrandChaseHistoryMain.desktop"
-	#echo -e "Name[fr_FR]=GrandChase Main" >> "$SCAPP/GrandChaseHistoryMain.desktop"
-	#echo -e "Terminal=OFF" >> "$SCAPP/GrandChaseHistoryMain.desktop"
-	#echo -e "Categories=Game;" >> "$SCAPP/GrandChaseHistoryMain.desktop"
-	#chmod +x "$SCAPP/GrandChaseHistoryMain.desktop"
-	#echo "O atalho \"Grand Chase History Main\" foi atualizado..."
-	#echo "Para acessar, acesse o menú do sistema, na categoria \"Game\"!"
-	#read -t 3
-		#;;
-	#	*)
-	#echo "Opção inválida, digite $0 {-h|--help} para mais informações!"
-	#exit 0
-		#;;
-  #esac
-   #else
-	#touch "$SCAPP/GrandChaseHistoryMain.desktop"
-	#echo -e "[Desktop Entry]" >> "$SCAPP/GrandChaseHistoryMain.desktop"
-	#echo -e "Encoding=UTF-8" >> "$SCAPP/GrandChaseHistoryMain.desktop"
-	#echo -e "Name="Grand Chase History Main"" >> "$SCAPP/GrandChaseHistoryMain.desktop"
-	#echo -e "Comment="Grand Chase History on Linux"" >> "$SCAPP/GrandChaseHistoryMain.desktop"
-	#echo -e "Type=Application" >> "$SCAPP/GrandChaseHistoryMain.desktop"
-	#echo "Exec=\"$WININST --main\"" >> "$SCAPP/GrandChaseHistoryMain.desktop"
-	#echo "Icon="$PWDIR/ico/GrandChaseMain"" >> "$SCAPP/GrandChaseHistoryMain.desktop"
-	#echo -e "Name[fr_FR]=GrandChase Main" >> "$SCAPP/GrandChaseHistoryMain.desktop"
-	#echo -e "Terminal=OFF" >> "$SCAPP/GrandChaseHistoryMain.desktop"
-	#echo -e "Categories=Game;" >> "$SCAPP/GrandChaseHistoryMain.desktop"
-	#chmod +x "$SCAPP/GrandChaseHistoryMain.desktop"
-
- #if [ -e "$SCAPP/GrandChaseHistoryMain.desktop" ];then
-	#echo "Atalho para o Grand Chase History Main criado com sucesso"
-	#echo "Acesse o Menú do sistema, na categoria \"Game\" para abrir o jogo!"
-
-   #else
-	#echo "Falha ao criar o atalho..."
-	#exit 0
- #fi
-
-#fi
 	exit 0
   ;;
 	-rs|--remove-shortcuts)
@@ -391,26 +443,26 @@ fi
 if [ -e "$SCAPP/GrandChaseHistory.desktop" ];then
 	rm -rf "$SCAPP/GrandChaseHistory.desktop"
   if [ -e "$SCAPP/GrandChaseHistory.desktop" ];then
-	echo "O atalho do Grand Chase History não foi removido!"
+	echo "$GCHMSG043"
 	exit 0
      else
-	echo "O atalho do Grand Chase History foi removido com sucesso!"
+	echo "$GCHMSG044"
   fi
    else
-	echo "O atalho para o Grand Chase History não existe ou já foi removido!"
+	echo "$GCHMSG045"
 	exit 0
 fi
 
 if [ -e "$SCAPP/GrandChaseHistoryMain.desktop" ];then
 	rm -rf "$SCAPP/GrandChaseHistoryMain.desktop"
   if [ -e "$SCAPP/GrandChaseHistoryMain.desktop" ];then
-	echo "O atalho do Grand Chase History Main não foi removido!"
+	echo "$GCHMSG046"
 	exit 0
      else
-	echo "O atalho do Grand Chase History Main foi removido com sucesso!"
+	echo "$GCHMSG047"
   fi
    else
-	echo "O atalho para o Grand Chase History Main não existe ou já foi removido!"
+	echo "$GCHMSG048"
 	exit 0
 fi
 	exit 0
@@ -419,45 +471,45 @@ fi
 if [ -d "$GCDIR" ];then
 	rm -rf "$GCDIR"
  if [ -d "$GCDIR" ];then
-	echo "O jogo Grand Chase History não foi removido com exito!"
+	echo "$GCHMSG049"
 	exit 0
     else
-	echo "O jogo Grand Chase History foi removido com sucesso!"
+	echo "$GCHMSG050"
 	bash "$0" --remove-shortcuts
  fi
    else
-	echo "O jogo Grand Chase History não existe ou já foi removido!"
+	echo "$GCHMSG051"
 	exit 0
 fi
   ;;
 	-rvm|--remove-virtual-machine)
 if [ -d "$GCPATH" ];then
-	echo "O jogo Grand Chase History depende da máquina virtual para rodar..."
-	echo "Tem certeza que quer remover a máquina virtual?"
-	read -p "Digite uma das opções [Sim(S)|Não(N)] : " GCRVM
+	echo "$GCHMSG052"
+	echo "$GCHMSG053"
+	read -p "$GCHMSG054" GCRVM
    case $GCRVM in
 		n|N|no|No|NO|nO|não|Não|nÂo|nãO)
-	echo "A Máquina Virtual do \"Grand Chase History\" será mantido!"
+	echo "$GCHMSG055"
 	sleep 3
 		;;
 		s|S|y|Y|yes|Yes|yEs|yeS|sim|Sim|sIm|siM)
-	echo "Removendo a máquina virtual do Grand Chase History..."
+	echo "$GCHMSG056"
 	read -t 3
 	rm -rf "$GCPATH"
  if [ -d "$GCPATH" ];then
-	echo "A Máquina Virtual do \"Grand Chase History\" foi removido com exito!"
+	echo "$GCHMSG057"
 	exit 0
     else
-	echo "A Máquina Virtual do \"Grand Chase History\" não foi removido com sucesso!"
+	echo "$GCHMSG058"
  fi
 		;;
 		*)
-	echo "Opção inválida, digite $0 {-h|--help} para mais informações!"
+	echo "$GCHMSG059"
 	exit 0
 		;;
 esac
    else
-	echo "A Máquina Virtual do \"Grand Chase History\" não existe ou já foi removido!"
+	echo "$GCHMSG060"
 	exit 0
 fi
   ;;
@@ -472,7 +524,7 @@ fi
 
 	VIRTDESKDIM="$2"
 
-	echo -e "Lendo informações do seu monitor:\n"
+	echo "$GCHMSG061"
 
 	read -t 3
 
@@ -480,10 +532,10 @@ fi
 
 	read -t 3
 
-	echo -e "\nInforme a resolução desejada para a Área de trabalho Virtual..."
-	echo -e "Se omitido, será configurado para "1280x1024"..."
-	echo -e "Para desativar a àrea de Trabalho Virtual, digite "off" no lugar da resolução.\n"
-	read -p "Resolução do Monitor Virtual [ "off" para desativado ] : " VIRTDESKDIM
+	echo "$GCHMSG062"
+	echo "$GCHMSG063"
+	echo "$GCHMSG064"
+	read -p "$GCHMSG065" VIRTDESKDIM
 
 if [ -z "$VIRTDESKDIM" ];then
 	WINEPREFIX="$GCPATH" winetricks vd=off
@@ -502,7 +554,7 @@ fi
 
   ;;
 	-mcl|--monitor-config-list)
-	echo "Listando resoluções suportadas do monitor..."
+	echo "$GCHMSG066"
 	xrandr --q1
 	exit 0
   ;;
@@ -522,7 +574,6 @@ xrandr --output $DEFAULT --mode "$XCFG00"
 	export WINEDEBUG="fixme-all,err-all,warn+cursor,-all"
 	cd "$GCDIR"
 	WINEPREFIX="$GCPATH" "$WINEX" "$GCEXEC"
-	#read
 xrandr --output $DEFAULT --mode `cat $GCPMD/xmon.cfg`
 
 else
@@ -545,65 +596,11 @@ fi
 	exit 0
   ;;
 	-h|--help)
-	echo -e '
-gcHistory, um aplicativo CLI para ajudar a jogar Grand Chase History em sistemas "não nativos" de sua origem.
-Uso: gcHistory [OPÇÃO]... [EXE]...
-
-Argumentos obrigatórios para opções longas também o são para as opções curtas.
-
-	Se omitido, iniciará o jogo via Launcher!
-
-
-  -h,   --help                         Emite esta ajuda
-  -d,   --debug                        Executa o jogo em DEBUG MODE
-  -i,   --install {Instalador.exe}     Instala o jogo em seu Usuário Atual
-  -ri,  --reinstall  {Instalador.exe}  Faz um Backup do jogo instalado e reinstala por cima
-  -rb,  --remove-backup                Remove o Backup criado ao reinstalar o jogo
-  -re,  --restore-backup               Remove o jogo reinstalado e restaura o Backup no lugar
-  -f,   --fix, --fix-shortcuts         Instala/atualiza um atalho do Launcher e Main no menú do sistema
-  -rs,  --remove-shortcuts             Remove o atalho do Launcher e do Main do menú do sistema
-  -rg,  --remove-game                  Remove o jogo por completo de seu Usuário Atual
-  -wt,  --winetricks                   Abre o configurador Winetricks em modo GUI
-  -xt,  --xterm                        Abre o Terminal XTERM usando a máquina virtual do Grand Chase History.
-  -mcl,  --monitor-config-list         Lista resoluções suportadas do monitor para usar no jogo
-  -mcs,  --monitor-config-set          Carrega o jogo com a resolução definida [ Ao sair do jogo retorna a resolução anterior ]
-  -cvm, --create-virtual-machine       Cria a Máquina Virtual do Wine para que possa instalar e jogar o Grand Chase History
-  -rvm, --remove-virtual-machine       Remove a Máquina Virtual do Wine de forma recursiva. [Cuidado ao usar esta opção]
-  -svd, --set-virtual-desktop          Ativa o Desktop Virtual do Wine e configura sua resolução [ off para desativar ]
-  -V,  --version                       Mostra a versão do Wine usado e sai
-
-  Alguns Exemplos:
-
-  Instalar o jogo Grand Chase History
-
-  gcHistory -i /caminho/setup.exe
-
-  Apenas executar o jogo:
-
-  gcHistory
-
-  Listar resolução suportada do monitor:
-
-  gcHistory -mcl
-
-  Executar o jogo com uma resolução suportada definida, para o exemplo 1280x720:
-
-  Se setar resolução errada, o jogo é executado sem setar a configuração definida
-  A resolução do jogo deve ser EXATAMENTE o mesmo que a resolução escolhida.
-  Se omitido, será setado automaticamente para a resolução 1680x1050
-
-
-  gcHistory -mcs 1280x720
-
-'
+	echo "$GCHMSG067"
 	exit 0
   ;;
-#Opçoes desativadas:
-#  -m,   --main                         Executa o jogo usando o Main em vez do Launcher
-#  -md,  --main-debug                   Executa o jogo usando o Main em DEBUG MODE
-
 	*)
-	echo -e "\nErro ao completar o comando...\nDigite "$0" {-h|--help} para mais informações!"
+	echo "$GCHMSG068"
 	exit 0
 	;;
  esac
