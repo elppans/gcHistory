@@ -39,7 +39,7 @@ GCHMSG034="Deseja sobrescrever e atualizar o atalho para \"Grand Chase History\"
 GCHMSG035="Opção inválida!"
 GCHMSG036="O atalho \"Grand Chase History\" será mantido!"
 GCHMSG037="O atalho \"Grand Chase History\" foi atualizado..."
-GCHMSG038="para acessar, acesse o menú do sistema, na categoria \"Game\"!"
+GCHMSG038="para usar, acesse o menú do sistema, na categoria \"Game\"!"
 GCHMSG039="Opção inválida, digite $0 {-h|--help} para mais informações!"
 GCHMSG040="Atalho para o Grand Chase History criado com sucesso"
 GCHMSG041="Acesse o Menú do sistema, na categoria \"Game\" para abrir o jogo!"
@@ -93,6 +93,8 @@ Argumentos obrigatórios para opções longas também o são para as opções cu
   -xt,  --xterm                        Abre o Terminal XTERM usando a máquina virtual do Grand Chase History.
   -mcl,  --monitor-config-list         Lista resoluções suportadas do monitor para usar no jogo
   -mcs,  --monitor-config-set          Carrega o jogo com a resolução definida [ Ao sair do jogo retorna a resolução anterior ]
+  -mcf,  --monitor-config-fix          Configura o Monitor para carregar o jogo no modo FullScreen Automático. [ Resolução do jogo deve estar em 1680x1050 ]
+  -mcu,  --monitor-config-unfix        Desativa a configuração do Monitor modo FullScreen automático para o carregamento padrão
   -cvm, --create-virtual-machine       Cria a Máquina Virtual do Wine para que possa instalar e jogar o Grand Chase History
   -rvm, --remove-virtual-machine       Remove a Máquina Virtual do Wine de forma recursiva. [Cuidado ao usar esta opção]
   -svd, --set-virtual-desktop          Ativa o Desktop Virtual do Wine e configura sua resolução [ off para desativar ]
@@ -165,7 +167,8 @@ export LD_LIBRARY_PATH="$WINLIB:$LD_LIBRARY_PATH"
 #export LD_LIBRARY_PATH="$WINLIB64:$LD_LIBRARY_PATH"
 export WINEARCH="win32"
 #export WINEARCH="win64"
-EXDLL="wmp=n;quartz=n;wmvcore=n;winegstreamer=;devenum=b"
+EXDLL=""
+#"wmp=n;quartz=n;wmvcore=n;winegstreamer=;devenum=b"
 
 if ( whereis rsync | grep bin ) >> /dev/null ; then
 	CPYNC="rsync -dhar --info=progress2"
@@ -194,14 +197,15 @@ if [ -d "$GCPATH" ];then
 	WINEPREFIX="$GCPATH" winepath
 	WINEPREFIX="$GCPATH" winetricks winxp --optout
 	#WINEPREFIX="$GCPATH" wine regsvr32 $GCDIR/mailmime.dll (mfc42 = dll dinâmico)
-	WINEPREFIX="$GCPATH" winetricks -q dotnet40 --optout
+	#WINEPREFIX="$GCPATH" winetricks -q dotnet40 --optout
 
 	WINEPREFIX="$GCPATH" winetricks -q mfc42 --optout
 	WINEPREFIX="$GCPATH" winetricks -q vcrun6 --optout
 	WINEPREFIX="$GCPATH" winetricks -q wmv9vcm --optout
 	WINEPREFIX="$GCPATH" winetricks -q quartz --optout
 
-	#WINEPREFIX="$GCPATH" winetricks --force -q dotnet45 --optout
+	WINEPREFIX="$GCPATH" winetricks --force -q dotnet45 --optout
+	#WINEPREFIX="$GCPATH" winetricks --force -q dotnet456 --optout
 	WINEPREFIX="$GCPATH" winetricks --force -q wmp9 --optout
 	WINEPREFIX="$GCPATH" winetricks --force -q allfonts --optout
 	#WINEPREFIX="$GCPATH" winetricks -q vcrun2015 --optout
@@ -495,7 +499,7 @@ if [ -d "$GCPATH" ];then
 		s|S|y|Y|yes|Yes|yEs|yeS|sim|Sim|sIm|siM)
 	echo "$GCHMSG056"
 	read -t 3
-	rm -rf "$GCPATH"
+	rm -rfv "$GCPATH"
  if [ -d "$GCPATH" ];then
 	echo "$GCHMSG057"
 	exit 0
@@ -590,6 +594,13 @@ xrandr --output $DEFAULT --mode "$XYCFG"
 xrandr --output $DEFAULT --mode `cat "$GCPMD"/xmon.cfg`
 
 fi
+  ;;
+	-mcf|--monitor-config-fix)
+	sed -i "1,160s/XMONCFG=0/XMONCFG=1/g" "$0"
+
+  ;;
+	-mcu|--monitor-config-unfix)
+	sed -i "1,160s/XMONCFG=1/XMONCFG=0/g" "$0"
   ;;
 	-V|--version)
 	"$WINEX" --version
