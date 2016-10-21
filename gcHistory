@@ -139,7 +139,26 @@ if [ `id -u` = 0 ];then
 fi
 
 # Monitor Auto SET [ 0 = OFF | 1 = ON ]
-XMONCFG=0
+XMONCFG=1
+
+## Monitor OUTPUT MODE
+
+# Modo que deve usar para a conexão padrão do monitor:
+
+# 0 = Especificar manualmente na linha com o parâmetro "DEFAULT" o Modo suportado e conectado do monitor. Para saber qual é, faça o comando xrandr no terminal
+# 1 = Metodo de detexão automática usando o parâmetro "primary"
+# 2 = Metodo de detexão automática usando o parâmetro "connected"
+
+OUTPUTMON=0
+
+ [ "$OUTPUTMON" = "0" ] && \
+{
+
+# Especifique manualmente o modo do monitor aqui:
+
+DEFAULT=VGA-0
+
+}
 
 RLSET=`readlink -m "$2"`
 
@@ -571,19 +590,36 @@ echo "$XCFG01" > "$GCPMD/xmon.cfg"
 
 if [ -z "$XYCFG" ] ; then
 
-DEFAULT=$(xrandr|awk 'BEGIN {} /^.*primary/{printf("%s;", $1)} END {}' | cut -d ";" -f "1" )
-xrandr --output $DEFAULT --mode "$XCFG00"
+	[ "$OUTPUTMON" = "1" ] && \
+ {
+DEFAULT=$(xrandr|awk 'BEGIN {} /^.*primary/{printf("%s;", $1)} END {}' | cut -d ";" -f "1")
+ }
+	[ "$OUTPUTMON" = "2" ] && \
+ {
+DEFAULT=$(xrandr | head -3 |grep "connected" | awk '{print $1}' | cut -d " " -f "1" | tail -n 1)
+ }
+
+
+xrandr --output "$DEFAULT" --mode "$XCFG00"
 
 	export WINEDLLOVERRIDES="$EXDLL"
 	export WINEDEBUG="fixme-all,err-all,warn+cursor,-all"
 	cd "$GCDIR"
 	WINEPREFIX="$GCPATH" "$WINEX" "$GCEXEC"
-xrandr --output $DEFAULT --mode `cat $GCPMD/xmon.cfg`
+xrandr --output "$DEFAULT" --mode `cat $GCPMD/xmon.cfg`
 
 else
 
+	[ "$OUTPUTMON" = "1" ] && \
+ {
 DEFAULT=$(xrandr|awk 'BEGIN {} /^.*primary/{printf("%s;", $1)} END {}' | cut -d ";" -f "1" )
-xrandr --output $DEFAULT --mode "$XYCFG"
+ }
+	[ "$OUTPUTMON" = "2" ] && \
+ {
+DEFAULT=$(xrandr | head -3 |grep "connected" | awk '{print $1}' | cut -d " " -f "1" | tail -n 1 )
+ }
+
+xrandr --output "$DEFAULT" --mode "$XYCFG"
 
 	export WINEDLLOVERRIDES="$EXDLL"
 	export WINEDEBUG="fixme-all,err-all,warn+cursor,-all"
@@ -591,7 +627,7 @@ xrandr --output $DEFAULT --mode "$XYCFG"
 	WINEPREFIX="$GCPATH" "$WINEX" "$GCEXEC"
 	read -t 30
 
-xrandr --output $DEFAULT --mode `cat "$GCPMD"/xmon.cfg`
+xrandr --output "$DEFAULT" --mode `cat "$GCPMD"/xmon.cfg`
 
 fi
   ;;
