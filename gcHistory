@@ -84,21 +84,21 @@ Argumentos obrigatórios para opções longas também o são para as opções cu
   -d,   --debug                        Executa o jogo em DEBUG MODE
   -i,   --install {Instalador.exe}     Instala o jogo em seu Usuário Atual
   -ri,  --reinstall  {Instalador.exe}  Faz um Backup do jogo instalado e reinstala por cima
-  -rb,  --remove-backup                Remove o Backup criado ao reinstalar o jogo
-  -re,  --restore-backup               Remove o jogo reinstalado e restaura o Backup no lugar
+  -rb,  --remove-backup                Remove o backup criado durante a instalação do jogo
+  -re,  --restore-backup               Remove o jogo reinstalado e restaura usando o Backup no lugar
   -f,   --fix, --fix-shortcuts         Instala/atualiza um atalho do Launcher e Main no menú do sistema
   -rs,  --remove-shortcuts             Remove o atalho do Launcher e do Main do menú do sistema
   -rg,  --remove-game                  Remove o jogo por completo de seu Usuário Atual
   -wt,  --winetricks                   Abre o configurador Winetricks em modo GUI
   -xt,  --xterm                        Abre o Terminal XTERM usando a máquina virtual do Grand Chase History.
-  -mcl,  --monitor-config-list         Lista resoluções suportadas do monitor para usar no jogo
-  -mcs,  --monitor-config-set          Carrega o jogo com a resolução definida [ Ao sair do jogo retorna a resolução anterior ]
-  -mcf,  --monitor-config-fix          Configura o Monitor para carregar o jogo no modo FullScreen Automático. [ Resolução do jogo deve estar em 1680x1050 ]
-  -mcu,  --monitor-config-unfix        Desativa a configuração do Monitor modo FullScreen automático para o carregamento padrão
+  -mcl, --monitor-config-list          Lista resoluções suportadas do monitor para usar no jogo
+  -mcs, --monitor-config-set           Carrega o jogo com a resolução definida [ Ao sair do jogo retorna a resolução anterior ]
+  -mcf, --monitor-config-fix           Configura o Monitor para carregar o jogo no modo FullScreen Automático. [ Resolução do jogo deve estar em 1680x1050 ]
+  -mcu, --monitor-config-unfix         Desativa a configuração do Monitor modo FullScreen automático para o carregamento padrão
   -cvm, --create-virtual-machine       Cria a Máquina Virtual do Wine para que possa instalar e jogar o Grand Chase History
   -rvm, --remove-virtual-machine       Remove a Máquina Virtual do Wine de forma recursiva. [Cuidado ao usar esta opção]
   -svd, --set-virtual-desktop          Ativa o Desktop Virtual do Wine e configura sua resolução [ off para desativar ]
-  -V,  --version                       Mostra a versão do Wine usado e sai
+  -V,   --version                      Mostra a versão do Wine usado e sai
 
   Alguns Exemplos:
 
@@ -116,7 +116,7 @@ Argumentos obrigatórios para opções longas também o são para as opções cu
 
   Executar o jogo com uma resolução suportada definida, para o exemplo 1280x720:
 
-  Se setar resolução errada, o jogo é executado sem setar a configuração definida
+  Se você definir uma resolução errada, o jogo roda com a resolução anteriormente definida
   A resolução do jogo deve ser EXATAMENTE o mesmo que a resolução escolhida.
   Se omitido, será setado automaticamente para a resolução 1680x1050
 
@@ -127,8 +127,128 @@ Argumentos obrigatórios para opções longas também o são para as opções cu
 GCHMSG068="Erro ao completar o comando...
 Digite "$0" {-h|--help} para mais informações!"
  ;;
-   *) GCMSG001=
+   *) GCHMSG001="Don’t use this script as root"
+GCHMSG002="The path for wine already exist!"
+GCHMSG003="Successfully created virtual machine..."
+GCHMSG004="Failed to create Virtual Machine"
+GCHMSG005="Selection of Grand Chase History’s Setup needed for installation!"
+GCHMSG006="Grand Chase History already installed"
+GCHMSG007="Installing Grand Chase History..."
+GCHMSG008="While in the setup/installation wizard window, uncheck the box: \“Create icon in the desktop\”..."
+GCHMSG009="After done the instalation, UNCHECK the option: \“Execute Grand Chase History\”..."
+GCHMSG010="Start the game using the new icon created in the menu!"
+GCHMSG011="Launching setup"
+GCHMSG012="Grand Chase History’s setup needed for reinstallation!"
+GCHMSG013="Setting Grand Chase History’s backup  ..."
+GCHMSG014="Started Grand Chase History’s backup ..."
+GCHMSG015="Backup done!"
+GCHMSG016="Backup failed!"
+GCHMSG017="Backup failed!"
+GCHMSG018="Reinstalling game..."
+GCHMSG019="While in the setup/installation wizard window, uncheck the box: \“Create icon in the desktop\”..."
+GCHMSG020="Starting the installer..."
+GCHMSG021="Use {-i|--install} to start installation of Grand Chase History!"
+GCHMSG022="Removing Backup..."
+GCHMSG023="Failed to remove backup!"
+GCHMSG024="Backup removed!"
+GCHMSG025="Backup folder does not exist!"
+GCHMSG026="Removing Grand Chase History..."
+GCHMSG027="Restoring Backup..."
+GCHMSG028="Backup restored..."
+GCHMSG029="Removing Backup..."
+GCHMSG030="Restoration Stopped!"
+GCHMSG031="Restoration stopped!"
+GCHMSG032="There is no backup!"
+GCHMSG033="The shortcut for the game already exists!"
+GCHMSG034="Overwrite the shortcute for \"Grand Chase History\"? (y/N)"
+GCHMSG035="Invalid input!"
+GCHMSG036="The shortcut \"Grand Chase History\" will remain!"
+GCHMSG037="The shortcut \"Grand Chase History\" was updated..."
+GCHMSG038="Search for the shortcut in the game’s category in the system’s menu!"
+GCHMSG039="Invalid input, type $0 {-h|--help} for more information!"
+GCHMSG040="Shortcut created!"
+GCHMSG041="Search for the shortcut in the game’s category in the system’s menu!"
+GCHMSG042="Failed to create shortcut!"
+GCHMSG043="Failed to remove shortcut!"
+GCHMSG044="Shortcut remove!"
+GCHMSG045="No shortcut found!"
+GCHMSG046="Failed to remove Grand chase’s main shortcut!"
+GCHMSG047="Grand Chase’s main shortcut removed"
+GCHMSG048="No Grand Chase’s main shortcut found!"
+GCHMSG049="Failed to remove Grand Chase History!"
+GCHMSG050="Grand Chase History removed!"
+GCHMSG051="Grand Chase History not installed or already removed!"
+GCHMSG052="Grand Chase History depends on virtual machine (wine’s prefix for grand chase) in order to run..."
+GCHMSG053="Remove virtual machine?"
+GCHMSG054="Type [Yes(Y)|No(N)] : "
+GCHMSG055="Virtual machine will remain"
+GCHMSG056="Removing Virtual Machine..."
+GCHMSG057="Virtual Machine removed!"
+GCHMSG058="Failed to remove Virtual Machine!"
+GCHMSG059="Invalid input, type $0 {-h|--help} for more information!"
+GCHMSG060="Virtual Machine not found!"
+GCHMSG061="Gathering monitor’s :
+"
+GCHMSG062="
+Enter the desired resolution for the Virtual Desktop ..."
+GCHMSG063="The default resolution is "1280x1024"..."
+GCHMSG064="Type "off" to deactivate virtual desktop mode.
+"
+GCHMSG065="Virtual Desktop’s resolution[ "off" to deactivate] : "
+GCHMSG066="Listing supported resolutions..."
+GCHMSG067='
+gcHistory, an automated script, that uses a custom version of wine configured to run grand chase.
+Use: gcHistory [Option]... [EXE]...
 
+Arguments required for long options also needed for short options.
+
+	If not, run with the Launcher!
+
+  -h,   --help                        Open the help
+  -d,   --debug                       Run the game in DEBUG MODE
+  -i,   --install {Instalador.exe}    Install the game in your profile
+  -ri,  --reinstall {Instalador.exe}  Make a backup and reinstall the game
+  -rb,  --remove-backup               Remove the backup created during the game installation
+  -re,  --restore-backup              Remove the reinstalled game and restore the backup on place
+  -f,   --fix, --fix-shortcuts        Install/update a launcher shortcut and menu shortcut
+  -rs,  --remove-shortcuts            Remove the laucher shortcut and menu shortcut
+  -rg,  --remove-game                 Remove the game of your profile
+  -wt,  --winetricks                  Open the winetricks configuration in GUI mode
+  -xt,  --xterm                       Open the XTERM Terminal using the Grand Chase History Virtual Machine
+  -mcl, --monitor-config-list         List of supported resolutions of monitor to use in the game
+  -mcs, --monitor-config-set          Load the game with the defined resolution [Go back to previous resolution after quit the game]
+  -mcf, --monitor-config-fix          Configure the monitor to load the game in fullscreen automatically [Game resolution should be in 1680x1050]
+  -mcu, --monitor-config-unfix        Disable the fullscreen mode configuration of monitor to default loading
+  -cvm, --create-virtual-machine      Create the Wine Virtual Machine to install and play Grad Chase History
+  -rvm, --remove-virtual-machine      Remove Wine Virtual Machine recursively {Be careful with this option]
+  -svd, --set-virtual-desktop         Enable the Wine Virtual Desktop and configure the resolution [off to disable]
+  -V,   --version                     Show the Wine version and quit.
+
+  Some Examples:
+
+  Install the game Grand Chase History:
+
+  gcHistory -i /path/setup.exe
+
+  Only run the game:
+
+  gcHistory
+
+  List the supported monitor resolutions:
+
+  gcHistory -mcl
+
+  Run the game with a defined supported resolution, for example 1280x720:
+  If you set the wrong resolution, the game runs with the resolution previously set
+  The game resolution must be EXACTLY the same as the resolution selected
+  If omitted, it is automatically set to the resolution 1680x1050
+
+
+  gcHistory -mcs 1280x720
+
+'
+GCHMSG068="Invalid imput...
+Type "$0" {-h|--help} for more Information!"
  ;;
   esac
 #TXT
