@@ -126,6 +126,18 @@ Argumentos obrigatórios para opções longas também o são para as opções cu
 '
 GCHMSG068="Erro ao completar o comando...
 Digite "$0" {-h|--help} para mais informações!"
+GCHMSG069="\n Escolha o método de configuração para o monitor:\n
+ 0 = Especificar manualmente o Modo suportado e conectado do monitor.
+ 1 = Método de detexão automática usando o parâmetro "primary"
+ 2 = Método de detexão automática usando o parâmetro "connected"
+ 3 = Método de detexão automática usando o parâmetro "listactivemonitors" [RECOMENDÁVEL]
+"
+GCHMSG070=" Digite o número correspondente ao método escolhido: "
+GCHMSG071=" Escolhido o método número"
+GCHMSG072=" Lista de monitores (Conectados e desconectados)...\n"
+GCHMSG073=" Digite o nome da saída do monitor listado com o estado de (CONECTADO): "
+GCHMSG074="Saída informada inválida!"
+GCHMSG075="Parametro errado..."
  ;;
    *) GCHMSG001="Don’t use this script as root"
 GCHMSG002="The path for wine already exist!"
@@ -249,9 +261,28 @@ Arguments required for long options also needed for short options.
 '
 GCHMSG068="Invalid imput...
 Type "$0" {-h|--help} for more Information!"
+GCHMSG069="\n Escolha o método de configuração para o monitor:\n
+ 0 = Especificar manualmente o Modo suportado e conectado do monitor.
+ 1 = Método de detexão automática usando o parâmetro "primary"
+ 2 = Método de detexão automática usando o parâmetro "connected"
+ 3 = Método de detexão automática usando o parâmetro "listactivemonitors" [RECOMENDÁVEL]
+"
+GCHMSG070=" Digite o número correspondente ao método escolhido: "
+GCHMSG071=" Escolhido o método número"
+GCHMSG072=" Lista de monitores (Conectados e desconectados)...\n"
+GCHMSG073=" Digite o nome da saída do monitor listado com o estado de (CONECTADO): "
+GCHMSG074="Saída informada inválida!"
+GCHMSG075="Parametro errado..."
  ;;
   esac
 #TXT
+
+#NCFG
+NXMON=1,398
+NOUTP=1,310
+NDEFA=314
+NDEFB=1,314
+#NCFG
 
 if [ `id -u` = 0 ];then
 	echo "$GCHMSG001"
@@ -259,17 +290,18 @@ if [ `id -u` = 0 ];then
 fi
 
 # Monitor Auto SET [ 0 = OFF | 1 = ON ]
-XMONCFG=1
+XMONCFG=0
 
 ## Monitor OUTPUT MODE
 
 # Modo que deve usar para a conexão padrão do monitor:
 
 # 0 = Especificar manualmente na linha com o parâmetro "DEFAULT" o Modo suportado e conectado do monitor. Para saber qual é, faça o comando xrandr no terminal
-# 1 = Metodo de detexão automática usando o parâmetro "primary"
-# 2 = Metodo de detexão automática usando o parâmetro "connected"
+# 1 = Método de detexão automática usando o parâmetro "primary"
+# 2 = Método de detexão automática usando o parâmetro "connected"
+# 3 = Método de detexão automática usando o parâmetro "listactivemonitors" [RECOMENDÁVEL]
 
-OUTPUTMON=0
+OUTPUTMON=3
 
  [ "$OUTPUTMON" = "0" ] && \
 {
@@ -718,6 +750,10 @@ DEFAULT=$(xrandr|awk 'BEGIN {} /^.*primary/{printf("%s;", $1)} END {}' | cut -d 
  {
 DEFAULT=$(xrandr | head -3 |grep "connected" | awk '{print $1}' | cut -d " " -f "1" | tail -n 1)
  }
+	[ "$OUTPUTMON" = "3" ] && \
+ {
+DEFAULT=$(xrandr --listactivemonitors | cut -d "+" -f "2" | cut -d " " -f "1" | tail -n 1)
+ }
 
 
 xrandr --output "$DEFAULT" --mode "$XCFG00"
@@ -752,12 +788,60 @@ xrandr --output "$DEFAULT" --mode `cat "$GCPMD"/xmon.cfg`
 fi
   ;;
 	-mcf|--monitor-config-fix)
-	sed -i "1,160s/XMONCFG=0/XMONCFG=1/g" "$0"
+	sed -i ""$NXMON"s/XMONCFG=0/XMONCFG=1/g" "$0"
 
   ;;
 	-mcu|--monitor-config-unfix)
-	sed -i "1,160s/XMONCFG=1/XMONCFG=0/g" "$0"
+	sed -i ""$NXMON"s/XMONCFG=1/XMONCFG=0/g" "$0"
   ;;
+	-mos|--monitor-output-set)
+	clear
+	echo -e "$GCHMSG069"
+	read -p "$GCHMSG070" MOSCFG
+   case $MOSCFG in
+	0)
+	clear
+	echo -e ""$GCHMSG071" \""$MOSCFG"\"\n"
+	sed -i ""$NOUTP"s/OUTPUTMON=1/OUTPUTMON=0/g" "$0"
+	sed -i ""$NOUTP"s/OUTPUTMON=2/OUTPUTMON=0/g" "$0"
+	sed -i ""$NOUTP"s/OUTPUTMON=3/OUTPUTMON=0/g" "$0"
+	echo -e "$GCHMSG072"	
+	xrandr | grep connected
+	echo -e "\n"
+	read -p "$GCHMSG073" MOSLIST
+    if ( xrandr | grep "$MOSLIST" );then
+	NDEFACFG=`head -n "$NDEFA" "$0" | grep DEFAULT= | cut -d "=" -f "2"`
+	sed -i ""$NDEFB"s/DEFAULT="$NDEFACFG"/DEFAULT="$MOSLIST"/g" "$0"
+      else
+	echo -e "$GCHMSG074"
+	exit 0
+    fi
+	exit 0
+	;;
+	1) echo -e ""$GCHMSG071" \""$MOSCFG"\"\n"
+	sed -i ""$NOUTP"s/OUTPUTMON=0/OUTPUTMON=1/g" "$0"
+	sed -i ""$NOUTP"s/OUTPUTMON=2/OUTPUTMON=1/g" "$0"
+	sed -i ""$NOUTP"s/OUTPUTMON=3/OUTPUTMON=1/g" "$0"
+	exit 0
+	;;
+	2) echo -e ""$GCHMSG071" \""$MOSCFG"\"\n"
+	sed -i ""$NOUTP"s/OUTPUTMON=0/OUTPUTMON=2/g" "$0"
+	sed -i ""$NOUTP"s/OUTPUTMON=1/OUTPUTMON=2/g" "$0"
+	sed -i ""$NOUTP"s/OUTPUTMON=3/OUTPUTMON=2/g" "$0"
+	exit 0
+	;;
+	3) echo -e ""$GCHMSG071" \""$MOSCFG"\"\n"
+	sed -i ""$NOUTP"s/OUTPUTMON=0/OUTPUTMON=3/g" "$0"
+	sed -i ""$NOUTP"s/OUTPUTMON=1/OUTPUTMON=3/g" "$0"
+	sed -i ""$NOUTP"s/OUTPUTMON=2/OUTPUTMON=3/g" "$0"
+	exit 0
+	;;
+	*) echo -e "$GCHMSG075"
+		exit 0
+	;;
+   esac
+exit 0
+;;
 	-V|--version)
 	"$WINEX" --version
 	exit 0
