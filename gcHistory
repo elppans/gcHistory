@@ -95,6 +95,7 @@ Argumentos obrigatórios para opções longas também o são para as opções cu
   -mcs, --monitor-config-set           Carrega o jogo com a resolução definida [ Ao sair do jogo retorna a resolução anterior ]
   -mcf, --monitor-config-fix           Configura o Monitor para carregar o jogo no modo FullScreen Automático. [ Resolução do jogo deve estar em 1680x1050 ]
   -mcu, --monitor-config-unfix         Desativa a configuração do Monitor modo FullScreen automático para o carregamento padrão
+  -mos, --monitor-output-set           Configura o TIPO DE SAÍDA do Monitor usando especificação manual ou automático
   -cvm, --create-virtual-machine       Cria a Máquina Virtual do Wine para que possa instalar e jogar o Grand Chase History
   -rvm, --remove-virtual-machine       Remove a Máquina Virtual do Wine de forma recursiva. [Cuidado ao usar esta opção]
   -svd, --set-virtual-desktop          Ativa o Desktop Virtual do Wine e configura sua resolução [ off para desativar ]
@@ -231,6 +232,7 @@ Arguments required for long options also needed for short options.
   -mcs, --monitor-config-set          Load the game with the defined resolution [Go back to previous resolution after quit the game]
   -mcf, --monitor-config-fix          Configure the monitor to load the game in fullscreen automatically [Game resolution should be in 1680x1050]
   -mcu, --monitor-config-unfix        Disable the fullscreen mode configuration of monitor to default loading
+  -mos, --monitor-output-set           Configura o TIPO DE SAÍDA do Monitor usando especificação manual ou automático
   -cvm, --create-virtual-machine      Create the Wine Virtual Machine to install and play Grad Chase History
   -rvm, --remove-virtual-machine      Remove Wine Virtual Machine recursively {Be careful with this option]
   -svd, --set-virtual-desktop         Enable the Wine Virtual Desktop and configure the resolution [off to disable]
@@ -425,6 +427,19 @@ fi
 	export WINEDEBUG="fixme-all,err-all,warn-cursor,-all"
 	mkdir -p $GCPATH
 	WINEPREFIX="$GCPATH" "$WINEX" "$RLSET"
+    if ( whereis nproc | grep bin ) >> /dev/null ;then
+	NCPU=`nproc`
+      else
+	NCPU=$(cat /proc/cpuinfo | egrep "core id|physical id" | tr -d "\n" | sed s/physical/\\nphysical/g | grep -v ^$ | sort | uniq | wc -l)
+    fi
+
+	ECPU=1
+
+    if [ "$NCPU" -gt "$ECPU" ];then
+	wine-csmt -on
+     else
+	wine-csmt -off
+    fi
 	#$CPYNC "$GCDIR/NewOption.dat" "$GCDIR/NewOption.dat.old"
 	$CPYNC "$PWDIR/gcmd/NewOption.dat" "$GCDIR"
 	[ -d "$HOME/.local/share/applications/wine/Programs/Grand Chase History" ] && \
@@ -472,6 +487,19 @@ fi
 	export WINEDEBUG="fixme-all,err-all,warn-cursor,-all"
 	mkdir -p $GCPATH
 	WINEPREFIX="$GCPATH" "$WINEX" "$RLSET"
+    if ( whereis nproc | grep bin ) >> /dev/null ;then
+	NCPU=`nproc`
+      else
+	NCPU=$(cat /proc/cpuinfo | egrep "core id|physical id" | tr -d "\n" | sed s/physical/\\nphysical/g | grep -v ^$ | sort | uniq | wc -l)
+    fi
+
+	ECPU=1
+
+    if [ "$NCPU" -gt "$ECPU" ];then
+	wine-csmt -on
+     else
+	wine-csmt -off
+    fi
 	$CPYNC "$PWDIR/gcmd/NewOption.dat" "$GCDIR"
 	[ -d "$HOME/.local/share/applications/wine/Programs/Grand Chase History" ] && \
 			{
