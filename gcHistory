@@ -436,9 +436,9 @@ fi
 	ECPU=1
 
     if [ "$NCPU" -gt "$ECPU" ];then
-	wine-csmt -on
+	regedit gcmd/CSMTON_PSMOFF.reg
      else
-	wine-csmt -off
+	regedit gcmd/CSMTOFF_PSMOFF.reg
     fi
 	#$CPYNC "$GCDIR/NewOption.dat" "$GCDIR/NewOption.dat.old"
 	$CPYNC "$PWDIR/gcmd/NewOption.dat" "$GCDIR"
@@ -496,9 +496,9 @@ fi
 	ECPU=1
 
     if [ "$NCPU" -gt "$ECPU" ];then
-	wine-csmt -on
+	regedit gcmd/CSMTON_PSMOFF.reg
      else
-	wine-csmt -off
+	regedit gcmd/CSMTOFF_PSMOFF.reg
     fi
 	$CPYNC "$PWDIR/gcmd/NewOption.dat" "$GCDIR"
 	[ -d "$HOME/.local/share/applications/wine/Programs/Grand Chase History" ] && \
