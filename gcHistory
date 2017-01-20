@@ -343,7 +343,8 @@ export WINEARCH="win32"
 EXDLL=""
 #"wmp=n;quartz=n;wmvcore=n;winegstreamer=;devenum=b"
 
-if ( whereis rsync | grep bin ) >> /dev/null ; then
+if ( which rsync ) >> /dev/null
+  then
 	CPYNC="rsync -dhar --info=progress2"
   else
 	CPYNC="cp -u -a -f"
