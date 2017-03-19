@@ -101,7 +101,7 @@ Argumentos obrigatórios para opções longas também o são para as opções cu
   -cvm, --create-virtual-machine       Cria a Máquina Virtual do Wine para que possa instalar e jogar o Grand Chase History
   -rvm, --remove-virtual-machine       Remove a Máquina Virtual do Wine de forma recursiva. [Cuidado ao usar esta opção]
   -svd, --set-virtual-desktop          Ativa o Desktop Virtual do Wine e configura sua resolução [ off para desativar ]
-  -V,   --version                      Mostra a versão do Wine usado e sai
+  -V,   --version                      Mostra a versão do Wine e aplicação.
 
   Alguns Exemplos:
 
@@ -238,7 +238,7 @@ Arguments required for long options also needed for short options.
   -cvm, --create-virtual-machine      Create the Wine Virtual Machine to install and play Grad Chase History
   -rvm, --remove-virtual-machine      Remove Wine Virtual Machine recursively {Be careful with this option]
   -svd, --set-virtual-desktop         Enable the Wine Virtual Desktop and configure the resolution [off to disable]
-  -V,   --version                     Show the Wine version and quit.
+  -V,   --version                     Shows the application and wine version.
 
   Some Examples:
 
@@ -879,8 +879,9 @@ fi
    esac
 exit 0
 ;;
-	-V|--version)
+	-V|-v|--version)
 	"$WINEX" --version
+	echo "`which --show-tilde "$0"` "$vdate""
 	exit 0
   ;;
 	-h|--help)
