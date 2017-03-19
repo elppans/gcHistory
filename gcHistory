@@ -1,5 +1,7 @@
 #!/bin/bash
 
+vdate=20171903
+
 #TXT
   case $LANG in
    pt*) GCHMSG001="Não pode ser root!"
