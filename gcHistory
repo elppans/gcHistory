@@ -442,7 +442,7 @@ fi
 	regedit gcmd/CSMTOFF_PSMOFF.reg
     fi
 	#$CPYNC "$GCDIR/NewOption.dat" "$GCDIR/NewOption.dat.old"
-	$CPYNC "$PWDIR/gcmd/NewOption.dat" "$GCDIR"
+	###$CPYNC "$PWDIR/gcmd/NewOption.dat" "$GCDIR"
 	[ -d "$HOME/.local/share/applications/wine/Programs/Grand Chase History" ] && \
 			{
 		rm -rf "$HOME/.local/share/applications/wine/Programs/Grand Chase History" >> /dev/null
@@ -462,13 +462,17 @@ fi
 	read -t 3
 	mkdir -p "$GCPATH/gch_bkp"
 	GCHBKP="$GCPATH/gch_bkp"
+	GCHBKPB="$GCHBKP/Grand Chase History"
 	echo "$GCHMSG014"
 	$CPYNC "$GCDIR" "$GCHBKP"
-	GCHBKPB="$GCHBKP/Grand Chase History"
+	read -t 5
   if [ -d "$GCHBKPB" ];then
-	GCHD=`du -s "$GCDIR" | cut -d "/" -f "1"`
-	GCHB=`du -s "$GCHBKPB" | cut -d "/" -f "1"`
-   if [ "$GCHD" -eq "$GCHB" ];then
+	GCHD=`du -hs "$GCDIR" | cut -d "/" -f "1"`
+	GCHB=`du -hs "$GCHBKPB" | cut -d "/" -f "1"`
+	echo ""$GCDIR""
+	echo ""$GCHBKPB""
+	echo "Grand Chase History: "$GCHB" > Backup: "$GCHD""
+   if [ "$GCHD" == "$GCHB" ];then
 	echo "$GCHMSG015"
 	read -t 3
                 else
@@ -501,7 +505,7 @@ fi
      else
 	regedit gcmd/CSMTOFF_PSMOFF.reg
     fi
-	$CPYNC "$PWDIR/gcmd/NewOption.dat" "$GCDIR"
+	###$CPYNC "$PWDIR/gcmd/NewOption.dat" "$GCDIR"
 	[ -d "$HOME/.local/share/applications/wine/Programs/Grand Chase History" ] && \
 			{
 		rm -rf "$HOME/.local/share/applications/wine/Programs/Grand Chase History" >> /dev/null
@@ -538,19 +542,21 @@ fi
 if [ -d "$GCHBKPB" ];then
 	echo "$GCHMSG026"
 	read -t 3
-	rm -R -f $GCDIR
+	rm -R -f "$GCDIR"
 	echo "$GCHMSG027"
 	$CPYNC "$GCHBKP" "$GCDIR"
   if [ -d "$GCDIR" ];then
-	GCHD=`du -s "$GCDIR" | cut -d "/" -f "1"`
-	GCHB=`du -s "$GCHBKPB" | cut -d "/" -f "1"`
-   if [ "$GCHD" -eq "$GCHB" ];then
+	GCHD=`du -hs "$GCDIR" | cut -d "/" -f "1"`
+	GCHB=`du -hs "$GCHBKPB" | cut -d "/" -f "1"`
+	echo "Backup: "$GCHD" > Grand Chase History: "$GCHB""
+   if [ "$GCHD" == "$GCHB" ];then
 	echo "$GCHMSG028"
 	read -t 3
 	echo "$GCHMSG029"
-	rm -R -f $GCHBKPB
+	rm -R -f "$GCHBKPB"
                 else
 	echo "$GCHMSG030"
+	echo "Backup: "$GCHD" > Grand Chase History: "$GCHB""
 	exit 0
    fi
     else
