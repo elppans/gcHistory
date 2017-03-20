@@ -362,16 +362,9 @@ if [ -z "$1" ];then
    # UPD gcHistory
 wget -O "$GCVD" -q https://github.com/elppans/gcHistory/raw/master/.vdate
 GCVDC=`cat "$GCVD"`
-
 if [ -e "$GCVD" ];then
 if [ "$vdate" != "$GCVDC" ];then
-	echo "Atualizando a aplicação, aguarde..."
-	read -t 10
-	
-	WINEPREFIX="$GCPATH" xterm -e "bash "$0" --upgrade
-	clean
-	echo -e "Atualização concluída...
-	read -t 5"
+	WINEPREFIX="$GCPATH" xterm -e "$0" --upgrade
 fi
 fi
    # UPD gcHistory
@@ -932,6 +925,8 @@ fi
    	exit 0
   ;;
 	-ug|--upgrade)
+	echo "Atualizando a aplicação, aguarde..."
+	read -t 5
 	cd "$GCPMD"
 	git fetch origin
 	git reset --hard origin/master
@@ -939,21 +934,9 @@ fi
 	chmod +x "$GCPMD/gcHistory"
 	chmod +x "$WINDIR/wine-csmt"
 	$CPYNC "$GCPMD/gcHistory" "$PWDIR"
-##
-    if ( whereis nproc | grep bin ) >> /dev/null ;then
-	NCPU=`nproc`
-      else
-	NCPU=$(cat /proc/cpuinfo | egrep "core id|physical id" | tr -d "\n" | sed s/physical/\\nphysical/g | grep -v ^$ | sort | uniq | wc -l)
-    fi
-
-	ECPU=1
-
-    if [ "$NCPU" -gt "$ECPU" ];then
-	regedit gcmd/CSMTON_PSMOFF.reg
-     else
-	regedit gcmd/CSMTOFF_PSMOFF.reg
-fi
-##	
+	clean
+	echo -e "Atualização concluída..."
+	read -t 5
   ;;
 	-V|-v|--version)
 	"$WINEX" --version
