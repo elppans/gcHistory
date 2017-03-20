@@ -330,12 +330,12 @@ WINLIB="$PWDIR/lib"
 #WINLIB64="$PWDIR/lib64"
 GCPMD="$PWDIR/gcmd"
 GCPATH="$PWDIR/gchmod"
+GCVD="$GCPATH/.vdate"
 GCS32="$PWDIR/gchmod/drive_c/windows/system32"
 GCDIR="$GCPATH/drive_c/Program Files/Grand Chase History"
 GCEXEC="$GCDIR/GrandChase.exe"
 GCMEXEC="$GCDIR/main.exe"
 WININST=`readlink -m "$0"`
-
 
 export PATH="$WINDIR:$PATH"
 export LD_LIBRARY_PATH="$WINLIB:$LD_LIBRARY_PATH"
@@ -358,6 +358,24 @@ if [ -z "$1" ];then
 	bash "$0" -mcs
 	exit 0
  }
+
+   # UPD gcHistory
+wget -O "$GCVD" -q https://github.com/elppans/gcHistory/raw/master/.vdate
+GCVDC=`cat "$GCVD"`
+
+if [ -e "$GCVD" ];then
+if [ "$vdate" != "$GCVDC" ];then
+	echo "Atualizando a aplicação, aguarde..."
+	read -t 10
+	
+	WINEPREFIX="$GCPATH" xterm -e "bash "$0" --upgrade
+	clean
+	echo -e "Atualização concluída...
+	read -t 5"
+fi
+fi
+   # UPD gcHistory
+
 	export WINEDLLOVERRIDES="$EXDLL"
 	export WINEDEBUG="fixme-all,err-all,warn+cursor,-all"
 	cd "$GCDIR"
@@ -881,7 +899,6 @@ exit 0
 ;;
 	-u|--update)
    # UPD gcHistory
-	GCVD="$GCPATH/.vdate"
 	wget -O "$GCVD" -q https://github.com/elppans/gcHistory/raw/master/.vdate
 	GCVDC=`cat "$GCVD"`
 
@@ -913,6 +930,30 @@ fi
 fi
    # UPD gcHistory FIM
    	exit 0
+  ;;
+	-ug|--upgrade)
+	cd "$GCPMD"
+	git fetch origin
+	git reset --hard origin/master
+	git pull
+	chmod +x "$GCPMD/gcHistory"
+	chmod +x "$WINDIR/wine-csmt"
+	$CPYNC "$GCPMD/gcHistory" "$PWDIR"
+##
+    if ( whereis nproc | grep bin ) >> /dev/null ;then
+	NCPU=`nproc`
+      else
+	NCPU=$(cat /proc/cpuinfo | egrep "core id|physical id" | tr -d "\n" | sed s/physical/\\nphysical/g | grep -v ^$ | sort | uniq | wc -l)
+    fi
+
+	ECPU=1
+
+    if [ "$NCPU" -gt "$ECPU" ];then
+	regedit gcmd/CSMTON_PSMOFF.reg
+     else
+	regedit gcmd/CSMTOFF_PSMOFF.reg
+fi
+##	
   ;;
 	-V|-v|--version)
 	"$WINEX" --version
