@@ -889,7 +889,7 @@ if [ -e "$GCVD" ];then
 if [ "$vdate" != "$GCVDC" ];then
 	cd "$GCPMD"
 	git pull
-	"$CPYNC" "$GCPMD/gcHistory" "$PWDIR"
+	$CPYNC "$GCPMD/gcHistory" "$PWDIR"
     if ( whereis nproc | grep bin ) >> /dev/null ;then
 	NCPU=`nproc`
       else
