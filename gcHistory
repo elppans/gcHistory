@@ -360,7 +360,7 @@ if [ -z "$1" ];then
  }
 
    # UPD gcHistory
-wget -O .vdate -q --show-progress --progress=dot https://github.com/elppans/gcHistory/raw/master/.vdate
+wget -O "$GCVD" -q --show-progress --progress=dot https://github.com/elppans/gcHistory/raw/master/.vdate
 echo ""
 GCVDC=`cat "$GCVD"`
 if [ -e "$GCVD" ];then
@@ -893,7 +893,7 @@ exit 0
 ;;
 	-ug|--upgrade)
    # UPD gcHistory
-	wget -O "$GCVD" -q https://github.com/elppans/gcHistory/raw/master/.vdate
+	wget -O "$GCVD" -q --show-progress --progress=dot https://github.com/elppans/gcHistory/raw/master/.vdate
 	GCVDC=`cat "$GCVD"`
 
 if [ -e "$GCVD" ];then
