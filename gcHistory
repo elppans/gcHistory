@@ -894,7 +894,21 @@ if [ "$vdate" != "$GCVDC" ];then
 	chmod +x "$GCPMD/gcHistory"
 	chmod +x "$WINDIR/wine-csmt"
 	$CPYNC "$GCPMD/gcHistory" "$PWDIR"
-	wine-csmt -on
+##
+    if ( whereis nproc | grep bin ) >> /dev/null ;then
+	NCPU=`nproc`
+      else
+	NCPU=$(cat /proc/cpuinfo | egrep "core id|physical id" | tr -d "\n" | sed s/physical/\\nphysical/g | grep -v ^$ | sort | uniq | wc -l)
+    fi
+
+	ECPU=1
+
+    if [ "$NCPU" -gt "$ECPU" ];then
+	regedit gcmd/CSMTON_PSMOFF.reg
+     else
+	regedit gcmd/CSMTOFF_PSMOFF.reg
+fi
+##
 fi
 fi
    # UPD gcHistory FIM
