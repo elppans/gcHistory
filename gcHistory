@@ -898,15 +898,18 @@ if [ "$vdate" != "$GCVDC" ];then
     fi
 
 	ECPU=1
-	echo "$WINEX""
+	
     if [ "$NCPU" -gt "$ECPU" ];then
-	"$WINEX" regedit gcmd/CSMTON_PSMOFF.reg
+    	echo "CSMT ON"
+	regedit gcmd/CSMTON_PSMOFF.reg
      else
-	"$WINEX" regedit gcmd/CSMTOFF_PSMOFF.reg
+     echo "CSMT OFF"
+	regedit gcmd/CSMTOFF_PSMOFF.reg
     fi
 fi
 fi
    # UPD gcHistory FIM
+   	exit 0
   ;;
 	-V|-v|--version)
 	"$WINEX" --version
