@@ -1,6 +1,6 @@
 #!/bin/bash
 
-vdate=20171903
+vdate=20172003
 
 #TXT
   case $LANG in
@@ -365,7 +365,7 @@ echo ""
 GCVDC=`cat "$GCVD"`
 if [ -e "$GCVD" ];then
 if [ "$vdate" != "$GCVDC" ];then
-	WINEPREFIX="$GCPATH" xterm -e "$0" --upgrade
+	WINEPREFIX="$GCPATH" xterm -e "$0" --update
 fi
 fi
    # UPD gcHistory
@@ -891,7 +891,7 @@ fi
    esac
 exit 0
 ;;
-	-u|--update)
+	-ug|--upgrade)
    # UPD gcHistory
 	wget -O "$GCVD" -q https://github.com/elppans/gcHistory/raw/master/.vdate
 	GCVDC=`cat "$GCVD"`
@@ -925,7 +925,7 @@ fi
    # UPD gcHistory FIM
    	exit 0
   ;;
-	-ug|--upgrade)
+	-u|--update)
 	echo "Atualizando a aplicação, aguarde..."
 	read -t 5
 	cd "$GCPMD"
@@ -935,7 +935,7 @@ fi
 	chmod +x "$GCPMD/gcHistory"
 	chmod +x "$WINDIR/wine-csmt"
 	$CPYNC "$GCPMD/gcHistory" "$PWDIR"
-	clean
+	clear
 	echo -e "Atualização concluída..."
 	read -t 5
   ;;
