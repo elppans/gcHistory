@@ -891,21 +891,10 @@ if [ "$vdate" != "$GCVDC" ];then
 	git pull
 	$CPYNC "$GCPMD/gcHistory" "$PWDIR"
 	chmod +x "$GCPMD/gcHistory"
-    if ( whereis nproc | grep bin ) >> /dev/null ;then
-	NCPU=`nproc`
-      else
-	NCPU=$(cat /proc/cpuinfo | egrep "core id|physical id" | tr -d "\n" | sed s/physical/\\nphysical/g | grep -v ^$ | sort | uniq | wc -l)
-    fi
-
-	ECPU=1
-	
-    if [ "$NCPU" -gt "$ECPU" ];then
-    	echo "CSMT ON"
-	regedit gcmd/CSMTON_PSMOFF.reg
-     else
-     echo "CSMT OFF"
-	regedit gcmd/CSMTOFF_PSMOFF.reg
-    fi
+	chmod +x "$WINDIR/wine-csmt"
+	git fetch origin
+	git reset --hard origin/master
+	wine-csmt -on
 fi
 fi
    # UPD gcHistory FIM
