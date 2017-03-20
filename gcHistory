@@ -888,12 +888,12 @@ exit 0
 if [ -e "$GCVD" ];then
 if [ "$vdate" != "$GCVDC" ];then
 	cd "$GCPMD"
-	git pull
-	$CPYNC "$GCPMD/gcHistory" "$PWDIR"
-	chmod +x "$GCPMD/gcHistory"
-	chmod +x "$WINDIR/wine-csmt"
 	git fetch origin
 	git reset --hard origin/master
+	git pull
+	chmod +x "$GCPMD/gcHistory"
+	chmod +x "$WINDIR/wine-csmt"
+	$CPYNC "$GCPMD/gcHistory" "$PWDIR"
 	wine-csmt -on
 fi
 fi
