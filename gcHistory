@@ -899,9 +899,9 @@ if [ "$vdate" != "$GCVDC" ];then
 	ECPU=1
 
     if [ "$NCPU" -gt "$ECPU" ];then
-	regedit gcmd/CSMTON_PSMOFF.reg
+	"$WINEX" regedit gcmd/CSMTON_PSMOFF.reg
      else
-	regedit gcmd/CSMTOFF_PSMOFF.reg
+	"$WINEX" regedit gcmd/CSMTOFF_PSMOFF.reg
     fi
 fi
 fi
